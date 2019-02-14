@@ -7,7 +7,7 @@ import {action, computed, observable} from 'mobx';
 import {ButtonGroup, Modal, Radio} from 'react-bootstrap';
 import {ClinicalDataType, ClinicalDataTypeEnum, NewChart} from "../../StudyViewPageStore";
 import ErrorBox from "../../../../shared/components/errorBox/ErrorBox";
-import {STUDY_VIEW_CONFIG} from "../../StudyViewConfig";
+import {STUDY_VIEW_CONFIG, ChartTypeEnum} from "../../StudyViewConfig";
 import {
     DEFAULT_GROUP_NAME_WITHOUT_USER_INPUT, ErrorCodeEnum,
     parseContent,
@@ -17,6 +17,8 @@ import {
 import autobind from 'autobind-decorator';
 import Collapse from "react-collapse";
 import {serializeEvent} from "../../../../shared/lib/tracking";
+import {DropdownButton, MenuItem} from "react-bootstrap";
+import { ChartType } from 'pages/studyView/StudyViewPageStore';
 
 export interface ICustomCaseSelectionProps {
     allSamples: Sample[];
@@ -25,6 +27,7 @@ export interface ICustomCaseSelectionProps {
     onSubmit: (chart: NewChart) => void;
     queriedStudies: string[];
     disableGrouping?: boolean;
+    disableChartTypeDropdown?: boolean;
     getDefaultChartName?: () => string;
     isChartNameValid?: (chartName: string) => boolean
 }
@@ -32,6 +35,11 @@ export interface ICustomCaseSelectionProps {
 const GroupByOptions: { value: ClinicalDataType, label: string; }[] = [
     {value: ClinicalDataTypeEnum.SAMPLE, label: 'By sample ID'},
     {value: ClinicalDataTypeEnum.PATIENT, label: 'By patient ID'}
+];
+
+const ChartTypeOptions: { value: ChartType, label: string; }[] = [
+    {value: ChartTypeEnum.PIE_CHART, label: 'Pie chart'},
+    {value: ChartTypeEnum.BAR_CHART, label: 'Bar chart'}
 ];
 
 @observer
@@ -44,6 +52,7 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
     @observable caseIdsMode: ClinicalDataType = ClinicalDataTypeEnum.SAMPLE;
     @observable content: string = '';
     @observable validContent: string = '';
+    @observable chartType: ChartType = ChartTypeEnum.PIE_CHART;
 
     public static defaultProps = {
         disableGrouping: false
@@ -68,7 +77,24 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
     get newChartInfo(): NewChart {
         return {
             name: this.chartName ? this.chartName : this.props.getDefaultChartName ? this.props.getDefaultChartName() : '',
-            groups: this.result.validationResult.error.length === 0 ? this.result.groups : []
+            groups: this.result.validationResult.error.length === 0 ? this.result.groups : [],
+            chartType: this.chartType
+        }
+    }
+
+    @computed
+    get chartTypeDropdownTitle(): string {
+        return `Chart Type (${this.chartTypeDisplayName})`;
+    }
+
+    @computed
+    get chartTypeDisplayName(): string {
+        //we just have two types for custom data, it should be pie chart or bar chart
+        if (this.chartType === ChartTypeEnum.PIE_CHART) {
+            return 'Pie chart';
+        }
+        else {
+            return 'Bar chart';
         }
     }
 
@@ -93,6 +119,19 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
         this.validateContent = true;
     }
 
+    @autobind
+    @action
+    checkContent(newContent: string) {
+        // check if all values are numerical
+        const regex = /^[0-9 ]*$/;
+        if (regex.test(newContent)) {
+            this.chartType = ChartTypeEnum.BAR_CHART;
+        }
+        else {
+            this.chartType = ChartTypeEnum.PIE_CHART;
+        }
+    }
+    
     @autobind
     @action
     onChartNameChange(event: any) {
@@ -189,6 +228,7 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
                         this.content = event.currentTarget.value;
                         _.delay(() => {
                             this.onChange(this.content);
+                            this.checkContent(this.content);
                         }, 500);
                     }}
                     data-test='CustomCaseSetInput'
@@ -204,6 +244,25 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
                                          error={message.message}/>
                     })
                 }
+
+                {!this.props.disableChartTypeDropdown && (
+                    <div className={styles.dropdown}>
+                            <DropdownButton title={this.chartTypeDropdownTitle} id="chartTypeDropdown">
+                            {
+                                ChartTypeOptions.map((option) => {
+                                    return <MenuItem
+                                        active={option.value === this.chartType}
+                                        onClick={(e) => {
+                                            this.chartType = $(e.target).attr("data-value") as any;
+                                        }}
+                                        data-value={option.value}
+                                    >{option.label}</MenuItem>
+                                })
+                            }
+                            </DropdownButton>
+                    </div>
+                )}
+
                 <div className={styles.operations}>
                     {!this.props.disableGrouping && (
                         <input placeholder={"Chart name (optional)"}

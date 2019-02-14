@@ -233,6 +233,7 @@ export default class StudyViewPage extends React.Component<IStudyViewPageProps, 
                                                             selectedSamples={this.store.selectedSamples.result}
                                                             submitButtonText={"Select"}
                                                             disableGrouping={true}
+                                                            disableChartTypeDropdown={true}
                                                             queriedStudies={this.store.queriedPhysicalStudyIds.result}
                                                             onSubmit={(chart: NewChart) => {
                                                                 this.showCustomSelectTooltip = false;

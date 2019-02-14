@@ -238,7 +238,8 @@ export type CustomGroup = {
 
 export type NewChart = {
     name: string,
-    groups: CustomGroup[]
+    groups: CustomGroup[],
+    chartType: ChartType
 }
 
 export type ClinicalDataCountSet = { [attrId: string]: number };
