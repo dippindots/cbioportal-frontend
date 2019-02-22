@@ -60,7 +60,7 @@ export default class BarChart extends React.Component<IBarChartProps, {}> implem
 
     private isDataBinSelected(dataBin: DataBin, filters: ClinicalDataIntervalFilterValue[]) {
         return filters.find(filter =>
-            (filter.start === dataBin.start && filter.end === dataBin.end) ||
+            (filter.start === dataBin.start && filter.end === dataBin.end && filter.start !== undefined && filter.end !== undefined) ||
             (filter.value !== undefined && filter.value === dataBin.specialValue)
         ) !== undefined;
     }

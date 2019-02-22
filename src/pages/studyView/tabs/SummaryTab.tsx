@@ -119,8 +119,11 @@ export class StudySummaryTab extends React.Component<IStudySummaryTabProps, {}> 
             clearAllFilters: () => {
                 this.store.clearAllFilters();
             },
-            setCustomChartFilters: (chartMeta: ChartMeta, values: string[]) => {
+            setCustomChartFilters: (chartMeta: ChartMeta, values: string[]) => { 
                 this.store.setCustomChartFilters(chartMeta, values);
+            },
+            setCustomBarChartFilters: (chartMeta: ChartMeta, values: DataBin[]) => {
+                this.store.setCostumBarChartFilters(chartMeta, values);
             },
         }
     }
@@ -168,17 +171,24 @@ export class StudySummaryTab extends React.Component<IStudySummaryTabProps, {}> 
                 break;
             }
             case ChartTypeEnum.BAR_CHART: {
-                props.promise = this.store.getClinicalDataBin(chartMeta);
-                props.filters = this.store.getClinicalDataIntervalFiltersByUniqueKey(chartMeta.uniqueKey);
-                props.onDataBinSelection = this.handlers.onDataBinSelection;
-                props.onResetSelection = this.handlers.onDataBinSelection;
+                if(this.store.isCustomChart(chartMeta.uniqueKey)) {
+                    props.promise = this.store.getCustomChartDataBinCount(chartMeta);
+                    props.filters = this.store.getCustomBarChartFilters(props.chartMeta!.uniqueKey);
+                    props.onDataBinSelection = this.store.setCostumBarChartFilters;
+                    props.onResetSelection = this.handlers.setCustomBarChartFilters;
+                } else {
+                    props.promise = this.store.getClinicalDataBin(chartMeta);
+                    props.filters = this.store.getClinicalDataIntervalFiltersByUniqueKey(chartMeta.uniqueKey);
+                    props.onDataBinSelection = this.handlers.onDataBinSelection;
+                    props.onResetSelection = this.handlers.onDataBinSelection;
+                }
                 props.onToggleLogScale = this.handlers.onToggleLogScale;
                 props.showLogScaleToggle = this.store.isLogScaleToggleVisible(
                     chartMeta.uniqueKey, props.promise!.result);
                 props.logScaleChecked = this.store.isLogScaleChecked(chartMeta.uniqueKey);
                 props.download = [
                     {
-                        initDownload: () => this.store.getClinicalData(chartMeta),
+                        initDownload: () => this.store.isCustomChart(chartMeta.uniqueKey) ? this.store.getCustomChartDownloadData(chartMeta) : this.store.getClinicalData(chartMeta),
                         type: 'TSV'
                     }, {
                         type: 'SVG'
