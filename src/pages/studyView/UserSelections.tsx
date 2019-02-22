@@ -10,16 +10,19 @@ import {PillTag} from "../../shared/components/PillTag/PillTag";
 import {GroupLogic} from "./filters/groupLogic/GroupLogic";
 import classnames from 'classnames';
 import {STUDY_VIEW_CONFIG} from "./StudyViewConfig";
+import { DataBin } from 'shared/api/generated/CBioPortalAPIInternal';
 
 export interface IUserSelectionsProps {
     filter: StudyViewFilterWithSampleIdentifierFilters;
     customChartsFilter: {[key:string]:string[]};
+    customBarChartsFilter: {[key:string]:ClinicalDataIntervalFilterValue[]};
     getSelectedGene: (entrezGeneId: number) => string|undefined;
     numberOfSelectedSamplesInCustomSelection: number;
     attributesMetaSet: { [id: string]: ChartMeta };
     updateClinicalDataEqualityFilter: (chartMeta: ChartMeta, value: string[]) => void;
     updateClinicalDataIntervalFilter: (chartMeta: ChartMeta, values: ClinicalDataIntervalFilterValue[]) => void;
     updateCustomChartFilter: (chartMeta: ChartMeta, values: string[]) => void;
+    updateCustomBarChartFilter: (chartMeta: ChartMeta, values: DataBin[], filterValue?: ClinicalDataIntervalFilterValue[]) => void;
     clearGeneFilter: () => void;
     clearCNAGeneFilter: () => void;
     removeGeneFilter: (entrezGeneId: number) => void;
@@ -111,7 +114,7 @@ export default class UserSelections extends React.Component<IUserSelectionsProps
             return acc;
         }, components);
 
-        // All custom charts
+        // All custom pie charts
         if(!_.isEmpty(this.props.customChartsFilter)) {
             _.reduce((this.props.customChartsFilter), (acc, content:string[], key:string) => {
                 const chartMeta = this.props.attributesMetaSet[key];
@@ -137,6 +140,33 @@ export default class UserSelections extends React.Component<IUserSelectionsProps
                 return acc;
             }, components);
         }
+
+        //All custom bar charts
+        if(!_.isEmpty(this.props.customBarChartsFilter)) {
+            _.reduce((this.props.customBarChartsFilter), (acc, filters:ClinicalDataIntervalFilterValue[], key:string) => {
+                const chartMeta = this.props.attributesMetaSet[key];
+                if (chartMeta) {
+                    acc.push(
+                        <div className={styles.parentGroupLogic}>
+                            <GroupLogic
+                                components={[
+                                    <span className={styles.filterClinicalAttrName}>{chartMeta.displayName}</span>,
+                                    <GroupLogic components={filters.map(filterValue => {
+                                        return <PillTag
+                                            content={filterValue.value}
+                                            backgroundColor={STUDY_VIEW_CONFIG.colors.theme.clinicalFilterContent}
+                                            onDelete={() => this.props.updateCustomBarChartFilter(chartMeta, [], _.remove(filters,  content=> content.value !== filterValue.value))}
+                                        />
+                                    })} operation={'or'} group={false}/>
+                                ]}
+                                operation={':'}
+                                group={false}/>
+                        </div>
+                    );
+                }
+                return acc;
+            }, components);
+        }        
 
         // Mutated Genes table
         let chartMeta = this.props.attributesMetaSet[UniqueKey.MUTATED_GENES_TABLE];
