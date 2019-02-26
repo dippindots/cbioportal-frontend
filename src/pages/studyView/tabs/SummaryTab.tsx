@@ -174,8 +174,8 @@ export class StudySummaryTab extends React.Component<IStudySummaryTabProps, {}> 
                 if(this.store.isCustomChart(chartMeta.uniqueKey)) {
                     props.promise = this.store.getCustomChartDataBinCount(chartMeta);
                     props.filters = this.store.getCustomBarChartFilters(props.chartMeta!.uniqueKey);
-                    props.onDataBinSelection = this.store.setCostumBarChartFilters;
-                    props.onResetSelection = this.handlers.setCustomBarChartFilters;
+                    props.onDataBinSelection = (chartMeta: ChartMeta, dataBins: DataBin[]) => this.store.setCustomChartFilters(chartMeta, dataBins.map(bin => bin.specialValue));
+                    props.onResetSelection = this.store.setCustomChartFilters;
                 } else {
                     props.promise = this.store.getClinicalDataBin(chartMeta);
                     props.filters = this.store.getClinicalDataIntervalFiltersByUniqueKey(chartMeta.uniqueKey);

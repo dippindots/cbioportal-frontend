@@ -12,7 +12,8 @@ import {
     DEFAULT_GROUP_NAME_WITHOUT_USER_INPUT, ErrorCodeEnum,
     parseContent,
     ParseResult,
-    ValidationResult
+    ValidationResult,
+    InfoEnum
 } from "./CustomCaseSelectionUtils";
 import autobind from 'autobind-decorator';
 import Collapse from "react-collapse";
@@ -27,9 +28,14 @@ export interface ICustomCaseSelectionProps {
     onSubmit: (chart: NewChart) => void;
     queriedStudies: string[];
     disableGrouping?: boolean;
-    disableChartTypeDropdown?: boolean;
+    disableChart?: boolean;
     getDefaultChartName?: () => string;
     isChartNameValid?: (chartName: string) => boolean
+}
+
+export enum ChartTypeNameEnum {
+    PIE_CHART_NAME = 'Pie chart',
+    BAR_CHART_NAME = 'Bar chart',
 }
 
 const GroupByOptions: { value: ClinicalDataType, label: string; }[] = [
@@ -38,14 +44,14 @@ const GroupByOptions: { value: ClinicalDataType, label: string; }[] = [
 ];
 
 const ChartTypeOptions: { value: ChartType, label: string; }[] = [
-    {value: ChartTypeEnum.PIE_CHART, label: 'Pie chart'},
-    {value: ChartTypeEnum.BAR_CHART, label: 'Bar chart'}
+    {value: ChartTypeEnum.PIE_CHART, label: ChartTypeNameEnum.PIE_CHART_NAME},
+    {value: ChartTypeEnum.BAR_CHART, label: ChartTypeNameEnum.BAR_CHART_NAME}
 ];
 
 @observer
 export default class CustomCaseSelection extends React.Component<ICustomCaseSelectionProps, {}> {
     private validateContent: boolean = false;
-    private chartNameValidation: ValidationResult = {warning: [], error: []};
+    private chartNameValidation: ValidationResult = {info:[], warning: [], error: []};
     @observable dataFormatCollapsed: boolean = true;
     @observable chartName: string;
     @observable showCaseIds: boolean = false;
@@ -91,10 +97,10 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
     get chartTypeDisplayName(): string {
         //we just have two types for custom data, it should be pie chart or bar chart
         if (this.chartType === ChartTypeEnum.PIE_CHART) {
-            return 'Pie chart';
+            return ChartTypeNameEnum.PIE_CHART_NAME;
         }
         else {
-            return 'Bar chart';
+            return ChartTypeNameEnum.BAR_CHART_NAME;
         }
     }
 
@@ -117,21 +123,17 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
     onChange(newContent: string) {
         this.validContent = newContent;
         this.validateContent = true;
-    }
-
-    @autobind
-    @action
-    checkContent(newContent: string) {
-        // check if all values are numerical
-        const regex = /^[0-9 ]*$/;
-        if (regex.test(newContent)) {
+        
+        // if text all numerical, change the button type to bar chart.
+        const resultInfo = this.result.validationResult.info.filter((info) => info.code === InfoEnum.ALL_NUMERIC);
+        if (resultInfo.length > 0)
+        {
             this.chartType = ChartTypeEnum.BAR_CHART;
-        }
-        else {
+        } else {
             this.chartType = ChartTypeEnum.PIE_CHART;
         }
     }
-    
+
     @autobind
     @action
     onChartNameChange(event: any) {
@@ -139,6 +141,7 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
         const validChartName = this.props.isChartNameValid ? this.props.isChartNameValid(this.chartName) : true;
         if (!validChartName) {
             this.chartNameValidation = {
+                info: [],
                 error: [{
                     code: ErrorCodeEnum.INVALID,
                     message: new Error('Chart name exists.')
@@ -147,6 +150,7 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
             }
         } else {
             this.chartNameValidation = {
+                info: [],
                 error: [],
                 warning: []
             }
@@ -196,31 +200,28 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
                     }
                 </ButtonGroup>
 
+                <span>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span
+                            className={styles.fillIds}
+                            onClick={this.onClick}>
+                            Use currently selected samples/patients
+                        </span>
 
-                {!this.props.disableGrouping && (
-                    <span>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                            <span
-                                className={styles.fillIds}
-                                onClick={this.onClick}>
-                                Use currently selected samples/patients
-                            </span>
-
-                            <div className="collapsible-header" onClick={this.handleDataFormatToggle}>
-                                <a>Data Format</a>
-                                <span style={{paddingLeft: 4, cursor: 'pointer'}}>
-                                {this.dataFormatCollapsed ?
-                                    <i className="fa fa-chevron-down"/> :
-                                    <i className="fa fa-chevron-up"/>
-                                }
-                            </span>
-                            </div>
+                        <div className="collapsible-header" onClick={this.handleDataFormatToggle}>
+                            <a>Data Format</a>
+                            <span style={{paddingLeft: 4, cursor: 'pointer'}}>
+                            {this.dataFormatCollapsed ?
+                                <i className="fa fa-chevron-down"/> :
+                                <i className="fa fa-chevron-up"/>
+                            }
+                        </span>
                         </div>
-                        <Collapse isOpened={!this.dataFormatCollapsed}>
-                            <div style={{marginTop: '5px'}}>{this.dataFormatContent}</div>
-                        </Collapse>
-                    </span>
-                )}
+                    </div>
+                    <Collapse isOpened={!this.dataFormatCollapsed}>
+                        <div style={{marginTop: '5px'}}>{this.dataFormatContent}</div>
+                    </Collapse>
+                </span>
 
                 <textarea
                     value={this.content}
@@ -228,24 +229,23 @@ export default class CustomCaseSelection extends React.Component<ICustomCaseSele
                         this.content = event.currentTarget.value;
                         _.delay(() => {
                             this.onChange(this.content);
-                            this.checkContent(this.content);
                         }, 500);
                     }}
                     data-test='CustomCaseSetInput'
                 />
                 {
                     this.result.validationResult.error.concat(this.chartNameValidation.error).map(message => {
-                        return <ErrorBox className={styles.error} error={message.message}/>
+                        return <ErrorBox className={styles.error} error={message.message as Error}/>
                     })
                 }
                 {
                     this.result.validationResult.warning.concat(this.chartNameValidation.warning).map(message => {
                         return <ErrorBox style={{backgroundColor: STUDY_VIEW_CONFIG.colors.theme.tertiary}}
-                                         error={message.message}/>
+                                         error={message.message as Error}/>
                     })
                 }
 
-                {!this.props.disableChartTypeDropdown && (
+                {!this.props.disableGrouping && (
                     <div className={styles.dropdown}>
                             <DropdownButton title={this.chartTypeDropdownTitle} id="chartTypeDropdown">
                             {

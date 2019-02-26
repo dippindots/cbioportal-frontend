@@ -18,10 +18,18 @@ type Code =
     | 'TOO_MANY_INVALID_CASE_ID'
     | 'STUDY_NOT_SELECTED'
     | 'INPUT_ERROR'
-    | 'NO_CHART_NAME';
+    | 'NO_CHART_NAME'
+    | 'ALL_NUMERIC';
+
+// type Info =
+//     'ALL_NUMERIC';
 
 export const DEFAULT_GROUP_NAME_WITHOUT_USER_INPUT = 'Selected';
 export const DEFAULT_GROUP_NAME_WITH_USER_INPUT = 'Unselected';
+
+export enum InfoEnum {
+    ALL_NUMERIC = 'ALL_NUMERIC'
+};
 
 export enum ErrorCodeEnum {
     OVERLAP = 'OVERLAP',
@@ -41,7 +49,7 @@ export enum WarningCodeEnum {
 
 export type ValidationMessage = {
     code: Code,
-    message: Error
+    message: Error | string
 };
 
 export type ParseResult = {
@@ -63,6 +71,7 @@ export type InputLine = {
 }
 
 export type ValidationResult = {
+    info: ValidationMessage[],
     error: ValidationMessage[],
     warning: ValidationMessage[],
 }
@@ -102,6 +111,7 @@ function getUniqueCaseId(studyId: string, caseId: string) {
 }
 
 export function validateLines(lines: InputLine[], caseType: ClinicalDataType, allSamples: Sample[], isSingleStudy: boolean, selectedStudies: string[]): ValidationResult {
+    let infoMessages: ValidationMessage[] = [];
     let errorMessages: ValidationMessage[] = [];
     let warningMessages: ValidationMessage[] = [];
     const groupNameDefault='_TEST_';
@@ -110,6 +120,9 @@ export function validateLines(lines: InputLine[], caseType: ClinicalDataType, al
 
     // Find out the invalid cases
     let invalidCases: string[] = [];
+
+    // Whether all groupName is numeric
+    let isAllNumeric = true;
 
     const validPair: { [key: string]: boolean } = _.reduce(allSamples, (acc, sample) => {
         acc[`${sample.studyId}:${caseType === ClinicalDataTypeEnum.PATIENT ? sample.patientId : sample.sampleId}`] = true;
@@ -160,6 +173,9 @@ export function validateLines(lines: InputLine[], caseType: ClinicalDataType, al
                     occurrence[_case]++;
                 }
             }
+        }
+        if (isAllNumeric && line.groupName) {
+            isAllNumeric = isAllNumeric && !isNaN(Number(line.groupName));
         }
     });
 
@@ -216,7 +232,16 @@ export function validateLines(lines: InputLine[], caseType: ClinicalDataType, al
         });
     }
 
+    //Write Info
+    if (isAllNumeric) {
+        infoMessages.push({
+            code: InfoEnum.ALL_NUMERIC,
+            message: "text is all numerical"
+        });
+    }
+
     return {
+        info: infoMessages,
         error: errorMessages,
         warning: warningMessages
     }
@@ -262,6 +287,7 @@ export function getGroups(lines: InputLine[], singleStudyId: string, caseType: C
 
 export function parseContent(content: string, needToValidate: boolean = false, selectedStudies: string[], caseType: ClinicalDataType, allSamples: Sample[], isSingleStudy: boolean): ParseResult {
     let validationResult: ValidationResult = {
+        info: [],
         error: [],
         warning: []
     };
@@ -269,6 +295,7 @@ export function parseContent(content: string, needToValidate: boolean = false, s
     if (lines.length > 0) {
         if (needToValidate) {
             const result = validateLines(lines, caseType, allSamples, isSingleStudy, selectedStudies);
+            validationResult.info!.push(...result.info!);
             validationResult.warning.push(...result.warning);
             validationResult.error.push(...result.error);
         }

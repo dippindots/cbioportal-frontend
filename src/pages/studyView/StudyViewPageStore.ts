@@ -561,7 +561,6 @@ export class StudyViewPageStore {
     private _chartSampleIdentifiersFilterSet =  observable.map<SampleIdentifier[]>();
 
     public customChartFilterSet =  observable.map<string[]>();
-    public customBarChartFilterSet = observable.map<ClinicalDataIntervalFilterValue[]>();
 
     @observable numberOfSelectedSamplesInCustomSelection: number = 0;
 
@@ -607,7 +606,6 @@ export class StudyViewPageStore {
     clearChartSampleIdentifierFilter(chartMeta: ChartMeta) {
         this._chartSampleIdentifiersFilterSet.delete(chartMeta.uniqueKey)
         this.customChartFilterSet.delete(chartMeta.uniqueKey)
-        this.customBarChartFilterSet.delete(chartMeta.uniqueKey)
     }
 
     @autobind
@@ -620,7 +618,6 @@ export class StudyViewPageStore {
         this.resetMutationCountVsCNAFilter();
         this._chartSampleIdentifiersFilterSet.clear();
         this.customChartFilterSet.clear();
-        this.customBarChartFilterSet.clear();
         this._withMutationDataFilter = undefined;
         this._withCNADataFilter = undefined;
         this.numberOfSelectedSamplesInCustomSelection = 0;
@@ -963,8 +960,12 @@ export class StudyViewPageStore {
         return this.customChartFilterSet.get(chartKey)|| [];
     }
 
-    public getCustomBarChartFilters(chartKey:string) {
-        return this.customBarChartFilterSet.get(chartKey)|| [];
+    public getCustomBarChartFilters(chartKey:string) : ClinicalDataIntervalFilterValue[] {
+        return _.map(this.customChartFilterSet.get(chartKey), (filterValue) => {
+            return {
+                value: filterValue
+            } as ClinicalDataIntervalFilterValue
+        });
     }
 
     public newCustomChartUniqueKey():string {
@@ -1927,15 +1928,7 @@ export class StudyViewPageStore {
         this._chartVisibility.set(uniqueKey, true);
         this._customChartsSelectedCases.set(uniqueKey, allCases);
 
-        //Autoselect the groups
-        switch(chartMeta.chartType) {
-            case ChartTypeEnum.PIE_CHART: {
-                this.setCustomChartFilters(chartMeta, newChart.groups.map(group=>group.name));
-            }
-            case ChartTypeEnum.BAR_CHART: {
-                this.setCostumBarChartFilters(chartMeta, [], newChart.groups.map(group => {return {'value': group.name} as ClinicalDataIntervalFilterValue}));
-            }
-        }
+        this.setCustomChartFilters(chartMeta, newChart.groups.map(group=>group.name));
         
         this.newlyAddedCharts.clear();
         this.newlyAddedCharts.push(uniqueKey);
@@ -3247,37 +3240,6 @@ export class StudyViewPageStore {
         }
     }
 
-    @autobind
-    @action
-    setCostumBarChartFilters(chartMeta: ChartMeta, dataBins: DataBin[], filterValue?: ClinicalDataIntervalFilterValue[]) {
-        let values: ClinicalDataIntervalFilterValue[]
-        if (filterValue) {
-            values = filterValue;
-        }
-        else {
-            values = getClinicalDataIntervalFilterValues(dataBins);
-        }
-
-        let filteredSampleIdentifiers: SampleIdentifier[] = [];
-        if (values.length > 0) {
-            filteredSampleIdentifiers = _.reduce(this._customChartsSelectedCases.get(chartMeta.uniqueKey), (acc, next) => {
-                if(_.map(values, value => value.value).includes(next.value)) {
-                    acc.push({
-                        studyId: next.studyId,
-                        sampleId: next.sampleId
-                    });
-                }
-                return acc;
-            }, [] as SampleIdentifier[]);
-            this.customBarChartFilterSet.set(chartMeta.uniqueKey, values);
-            this._chartSampleIdentifiersFilterSet.set(chartMeta.uniqueKey, filteredSampleIdentifiers);
-
-        } else {
-            this._chartSampleIdentifiersFilterSet.delete(chartMeta.uniqueKey)
-            this.customBarChartFilterSet.delete(chartMeta.uniqueKey)
-        }
-    }
-
     readonly cancerStudiesData = remoteData<ClinicalDataCountWithColor[]>({
         await: () => [this.selectedSamples],
         invoke: async () => {
@@ -3400,13 +3362,13 @@ export class StudyViewPageStore {
                                     } as DataBin
                                 )
                             });
-                            const defaultData = this.selectedSamples.result.filter((sample) => !matchedSampleIds.includes(sample.sampleId));
-                            if (defaultData && defaultData.length >= 1) {
+                            const defaultDataLength = this.selectedSamples.result.length - filteredCases.length;
+                            if (defaultDataLength >= 1) {
                                 bin.push(
                                     {
                                         attributeId: uniqueKey,
                                         clinicalDataType: 'SAMPLE',
-                                        count: defaultData.length,
+                                        count: defaultDataLength,
                                         specialValue: Datalabel.NA
                                     } as DataBin
                                 );
