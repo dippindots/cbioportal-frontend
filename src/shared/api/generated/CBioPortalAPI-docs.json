@@ -76,21 +76,14 @@
       "description": " "
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
     "/cancer-types": {
       "get": {
-        "tags": [
-          "Cancer Types"
-        ],
+        "tags": ["Cancer Types"],
         "summary": "Get all cancer types",
         "operationId": "getAllCancerTypesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -99,12 +92,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -152,10 +140,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -173,14 +158,10 @@
     },
     "/cancer-types/{cancerTypeId}": {
       "get": {
-        "tags": [
-          "Cancer Types"
-        ],
+        "tags": ["Cancer Types"],
         "summary": "Get a cancer type",
         "operationId": "getCancerTypeUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "cancerTypeId",
@@ -202,14 +183,10 @@
     },
     "/clinical-attributes": {
       "get": {
-        "tags": [
-          "Clinical Attributes"
-        ],
+        "tags": ["Clinical Attributes"],
         "summary": "Get all clinical attributes",
         "operationId": "getAllClinicalAttributesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -218,12 +195,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -272,10 +244,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -293,17 +262,11 @@
     },
     "/clinical-attributes/counts/fetch": {
       "post": {
-        "tags": [
-          "Clinical Attributes"
-        ],
+        "tags": ["Clinical Attributes"],
         "summary": "Get counts for clinical attributes according to their data availability for selected samples/patients",
         "operationId": "getClinicalAttributeCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -330,17 +293,11 @@
     },
     "/clinical-attributes/fetch": {
       "post": {
-        "tags": [
-          "Clinical Attributes"
-        ],
+        "tags": ["Clinical Attributes"],
         "summary": "Fetch clinical attributes",
         "operationId": "fetchClinicalAttributesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -361,12 +318,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -384,17 +336,11 @@
     },
     "/clinical-data/fetch": {
       "post": {
-        "tags": [
-          "Clinical Data"
-        ],
+        "tags": ["Clinical Data"],
         "summary": "Fetch clinical data by patient IDs or sample IDs (all studies)",
         "operationId": "fetchClinicalDataUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "clinicalDataType",
@@ -403,10 +349,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -424,12 +367,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -447,17 +385,11 @@
     },
     "/copy-number-segments/fetch": {
       "post": {
-        "tags": [
-          "Copy Number Segments"
-        ],
+        "tags": ["Copy Number Segments"],
         "summary": "Fetch copy number segments by sample ID",
         "operationId": "fetchCopyNumberSegmentsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -485,12 +417,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -508,17 +435,11 @@
     },
     "/gene-panel-data/fetch": {
       "post": {
-        "tags": [
-          "Gene Panels"
-        ],
+        "tags": ["Gene Panels"],
         "summary": "Fetch gene panel data",
         "operationId": "fetchGenePanelDataInMultipleMolecularProfilesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -545,14 +466,10 @@
     },
     "/gene-panels": {
       "get": {
-        "tags": [
-          "Gene Panels"
-        ],
+        "tags": ["Gene Panels"],
         "summary": "Get all gene panels",
         "operationId": "getAllGenePanelsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -561,12 +478,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -598,10 +510,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "genePanelId",
-              "description"
-            ]
+            "enum": ["genePanelId", "description"]
           },
           {
             "name": "direction",
@@ -610,10 +519,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -631,17 +537,11 @@
     },
     "/gene-panels/fetch": {
       "post": {
-        "tags": [
-          "Gene Panels"
-        ],
+        "tags": ["Gene Panels"],
         "summary": "Get gene panel",
         "operationId": "fetchGenePanelsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -662,12 +562,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -685,14 +580,10 @@
     },
     "/gene-panels/{genePanelId}": {
       "get": {
-        "tags": [
-          "Gene Panels"
-        ],
+        "tags": ["Gene Panels"],
         "summary": "Get gene panel",
         "operationId": "getGenePanelUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "genePanelId",
@@ -714,14 +605,10 @@
     },
     "/genes": {
       "get": {
-        "tags": [
-          "Genes"
-        ],
+        "tags": ["Genes"],
         "summary": "Get all genes",
         "operationId": "getAllGenesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "keyword",
@@ -744,12 +631,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -796,10 +678,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -817,17 +696,11 @@
     },
     "/genes/fetch": {
       "post": {
-        "tags": [
-          "Genes"
-        ],
+        "tags": ["Genes"],
         "summary": "Fetch genes by ID",
         "operationId": "fetchGenesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneIdType",
@@ -836,10 +709,7 @@
             "required": false,
             "type": "string",
             "default": "ENTREZ_GENE_ID",
-            "enum": [
-              "ENTREZ_GENE_ID",
-              "HUGO_GENE_SYMBOL"
-            ]
+            "enum": ["ENTREZ_GENE_ID", "HUGO_GENE_SYMBOL"]
           },
           {
             "in": "body",
@@ -860,12 +730,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -883,14 +748,10 @@
     },
     "/genes/{geneId}": {
       "get": {
-        "tags": [
-          "Genes"
-        ],
+        "tags": ["Genes"],
         "summary": "Get a gene",
         "operationId": "getGeneUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneId",
@@ -912,14 +773,10 @@
     },
     "/genes/{geneId}/aliases": {
       "get": {
-        "tags": [
-          "Genes"
-        ],
+        "tags": ["Genes"],
         "summary": "Get aliases of a gene",
         "operationId": "getAliasesOfGeneUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneId",
@@ -944,17 +801,11 @@
     },
     "/molecular-data/fetch": {
       "post": {
-        "tags": [
-          "Molecular Data"
-        ],
+        "tags": ["Molecular Data"],
         "summary": "Fetch molecular data",
         "operationId": "fetchMolecularDataInMultipleMolecularProfilesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -972,12 +823,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -995,14 +841,10 @@
     },
     "/molecular-profiles": {
       "get": {
-        "tags": [
-          "Molecular Profiles"
-        ],
+        "tags": ["Molecular Profiles"],
         "summary": "Get all molecular profiles",
         "operationId": "getAllMolecularProfilesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -1011,12 +853,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1064,10 +901,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1085,17 +919,11 @@
     },
     "/molecular-profiles/fetch": {
       "post": {
-        "tags": [
-          "Molecular Profiles"
-        ],
+        "tags": ["Molecular Profiles"],
         "summary": "Fetch molecular profiles",
         "operationId": "fetchMolecularProfilesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1113,12 +941,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -1136,14 +959,10 @@
     },
     "/molecular-profiles/{molecularProfileId}": {
       "get": {
-        "tags": [
-          "Molecular Profiles"
-        ],
+        "tags": ["Molecular Profiles"],
         "summary": "Get molecular profile",
         "operationId": "getMolecularProfileUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1165,14 +984,10 @@
     },
     "/molecular-profiles/{molecularProfileId}/discrete-copy-number": {
       "get": {
-        "tags": [
-          "Discrete Copy Number Alterations"
-        ],
+        "tags": ["Discrete Copy Number Alterations"],
         "summary": "Get discrete copy number alterations in a molecular profile",
         "operationId": "getDiscreteCopyNumbersInMolecularProfileUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1212,12 +1027,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -1235,17 +1045,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/discrete-copy-number-counts/fetch": {
       "post": {
-        "tags": [
-          "Discrete Copy Number Alterations"
-        ],
+        "tags": ["Discrete Copy Number Alterations"],
         "summary": "Get counts of specific genes and alterations within a CNA molecular profile",
         "operationId": "fetchCopyNumberCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1282,17 +1086,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/discrete-copy-number/fetch": {
       "post": {
-        "tags": [
-          "Discrete Copy Number Alterations"
-        ],
+        "tags": ["Discrete Copy Number Alterations"],
         "summary": "Fetch discrete copy number alterations in a molecular profile by sample ID",
         "operationId": "fetchDiscreteCopyNumbersInMolecularProfileUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1334,12 +1132,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -1357,17 +1150,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/gene-panel-data/fetch": {
       "post": {
-        "tags": [
-          "Gene Panels"
-        ],
+        "tags": ["Gene Panels"],
         "summary": "Get gene panel data",
         "operationId": "getGenePanelDataUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1401,14 +1188,10 @@
     },
     "/molecular-profiles/{molecularProfileId}/molecular-data": {
       "get": {
-        "tags": [
-          "Molecular Data"
-        ],
+        "tags": ["Molecular Data"],
         "summary": "Get all molecular data in a molecular profile",
         "operationId": "getAllMolecularDataInMolecularProfileUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1439,12 +1222,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -1462,17 +1240,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/molecular-data/fetch": {
       "post": {
-        "tags": [
-          "Molecular Data"
-        ],
+        "tags": ["Molecular Data"],
         "summary": "Fetch molecular data in a molecular profile",
         "operationId": "fetchAllMolecularDataInMolecularProfileUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1497,12 +1269,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -1520,14 +1287,10 @@
     },
     "/molecular-profiles/{molecularProfileId}/mutations": {
       "get": {
-        "tags": [
-          "Mutations"
-        ],
+        "tags": ["Mutations"],
         "summary": "Get mutations in a molecular profile by Sample List ID",
         "operationId": "getMutationsInMolecularProfileBySampleListIdUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1558,12 +1321,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1626,10 +1384,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1647,17 +1402,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/mutations/fetch": {
       "post": {
-        "tags": [
-          "Mutations"
-        ],
+        "tags": ["Mutations"],
         "summary": "Fetch mutations in a molecular profile",
         "operationId": "fetchMutationsInMolecularProfileUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1682,12 +1431,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1750,10 +1494,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1771,17 +1512,11 @@
     },
     "/mutation-counts-by-position/fetch": {
       "post": {
-        "tags": [
-          "Mutations"
-        ],
+        "tags": ["Mutations"],
         "summary": "Fetch mutation counts in all studies by gene and position",
         "operationId": "fetchMutationCountsByPositionUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1811,17 +1546,11 @@
     },
     "/mutations/fetch": {
       "post": {
-        "tags": [
-          "Mutations"
-        ],
+        "tags": ["Mutations"],
         "summary": "Fetch mutations in multiple molecular profiles by sample IDs",
         "operationId": "fetchMutationsInMultipleMolecularProfilesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1839,12 +1568,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1907,10 +1631,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1928,14 +1649,10 @@
     },
     "/patients": {
       "get": {
-        "tags": [
-          "Patients"
-        ],
+        "tags": ["Patients"],
         "summary": "Get all patients",
         "operationId": "getAllPatientsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "keyword",
@@ -1951,12 +1668,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1988,9 +1700,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "patientId"
-            ]
+            "enum": ["patientId"]
           },
           {
             "name": "direction",
@@ -1999,10 +1709,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2020,17 +1727,11 @@
     },
     "/patients/fetch": {
       "post": {
-        "tags": [
-          "Patients"
-        ],
+        "tags": ["Patients"],
         "summary": "Fetch patients by ID",
         "operationId": "fetchPatientsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2048,12 +1749,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -2071,14 +1767,10 @@
     },
     "/sample-lists": {
       "get": {
-        "tags": [
-          "Sample Lists"
-        ],
+        "tags": ["Sample Lists"],
         "summary": "Get all sample lists",
         "operationId": "getAllSampleListsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -2087,12 +1779,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -2139,10 +1826,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2160,17 +1844,11 @@
     },
     "/sample-lists/fetch": {
       "post": {
-        "tags": [
-          "Sample Lists"
-        ],
+        "tags": ["Sample Lists"],
         "summary": "Fetch sample lists by ID",
         "operationId": "fetchSampleListsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2191,12 +1869,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -2214,14 +1887,10 @@
     },
     "/sample-lists/{sampleListId}": {
       "get": {
-        "tags": [
-          "Sample Lists"
-        ],
+        "tags": ["Sample Lists"],
         "summary": "Get sample list",
         "operationId": "getSampleListUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "sampleListId",
@@ -2243,14 +1912,10 @@
     },
     "/sample-lists/{sampleListId}/sample-ids": {
       "get": {
-        "tags": [
-          "Sample Lists"
-        ],
+        "tags": ["Sample Lists"],
         "summary": "Get all sample IDs in a sample list",
         "operationId": "getAllSampleIdsInSampleListUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "sampleListId",
@@ -2275,17 +1940,11 @@
     },
     "/samples/fetch": {
       "post": {
-        "tags": [
-          "Samples"
-        ],
+        "tags": ["Samples"],
         "summary": "Fetch samples by ID",
         "operationId": "fetchSamplesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2303,12 +1962,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -2326,14 +1980,10 @@
     },
     "/studies": {
       "get": {
-        "tags": [
-          "Studies"
-        ],
+        "tags": ["Studies"],
         "summary": "Get all studies",
         "operationId": "getAllStudiesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "keyword",
@@ -2349,12 +1999,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -2407,10 +2052,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2428,17 +2070,11 @@
     },
     "/studies/fetch": {
       "post": {
-        "tags": [
-          "Studies"
-        ],
+        "tags": ["Studies"],
         "summary": "Fetch studies by IDs",
         "operationId": "fetchStudiesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2459,12 +2095,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -2482,17 +2113,11 @@
     },
     "/studies/tags/fetch": {
       "post": {
-        "tags": [
-          "Studies"
-        ],
+        "tags": ["Studies"],
         "summary": "Get the study tags by IDs",
         "operationId": "getTagsForMultipleStudiesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2522,14 +2147,10 @@
     },
     "/studies/{studyId}": {
       "get": {
-        "tags": [
-          "Studies"
-        ],
+        "tags": ["Studies"],
         "summary": "Get a study",
         "operationId": "getStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2551,14 +2172,10 @@
     },
     "/studies/{studyId}/clinical-attributes": {
       "get": {
-        "tags": [
-          "Clinical Attributes"
-        ],
+        "tags": ["Clinical Attributes"],
         "summary": "Get all clinical attributes in the specified study",
         "operationId": "getAllClinicalAttributesInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2574,12 +2191,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -2628,10 +2240,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2649,14 +2258,10 @@
     },
     "/studies/{studyId}/clinical-attributes/{clinicalAttributeId}": {
       "get": {
-        "tags": [
-          "Clinical Attributes"
-        ],
+        "tags": ["Clinical Attributes"],
         "summary": "Get specified clinical attribute",
         "operationId": "getClinicalAttributeInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2685,14 +2290,10 @@
     },
     "/studies/{studyId}/clinical-data": {
       "get": {
-        "tags": [
-          "Clinical Data"
-        ],
+        "tags": ["Clinical Data"],
         "summary": "Get all clinical data in a study",
         "operationId": "getAllClinicalDataInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2715,10 +2316,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "name": "projection",
@@ -2727,12 +2325,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -2764,10 +2357,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "clinicalAttributeId",
-              "value"
-            ]
+            "enum": ["clinicalAttributeId", "value"]
           },
           {
             "name": "direction",
@@ -2776,10 +2366,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2797,17 +2384,11 @@
     },
     "/studies/{studyId}/clinical-data/fetch": {
       "post": {
-        "tags": [
-          "Clinical Data"
-        ],
+        "tags": ["Clinical Data"],
         "summary": "Fetch clinical data by patient IDs or sample IDs (specific study)",
         "operationId": "fetchAllClinicalDataInStudyUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2823,10 +2404,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -2844,12 +2422,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           }
         ],
         "responses": {
@@ -2867,14 +2440,10 @@
     },
     "/studies/{studyId}/molecular-profiles": {
       "get": {
-        "tags": [
-          "Molecular Profiles"
-        ],
+        "tags": ["Molecular Profiles"],
         "summary": "Get all molecular profiles in a study",
         "operationId": "getAllMolecularProfilesInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2890,12 +2459,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -2943,10 +2507,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -2964,14 +2525,10 @@
     },
     "/studies/{studyId}/patients": {
       "get": {
-        "tags": [
-          "Patients"
-        ],
+        "tags": ["Patients"],
         "summary": "Get all patients in a study",
         "operationId": "getAllPatientsInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -2987,12 +2544,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3024,9 +2576,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "patientId"
-            ]
+            "enum": ["patientId"]
           },
           {
             "name": "direction",
@@ -3035,10 +2585,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3056,14 +2603,10 @@
     },
     "/studies/{studyId}/patients/{patientId}": {
       "get": {
-        "tags": [
-          "Patients"
-        ],
+        "tags": ["Patients"],
         "summary": "Get a patient in a study",
         "operationId": "getPatientInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3092,14 +2635,10 @@
     },
     "/studies/{studyId}/patients/{patientId}/clinical-data": {
       "get": {
-        "tags": [
-          "Clinical Data"
-        ],
+        "tags": ["Clinical Data"],
         "summary": "Get all clinical data of a patient in a study",
         "operationId": "getAllClinicalDataOfPatientInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3129,12 +2668,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3166,10 +2700,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "clinicalAttributeId",
-              "value"
-            ]
+            "enum": ["clinicalAttributeId", "value"]
           },
           {
             "name": "direction",
@@ -3178,10 +2709,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3199,14 +2727,10 @@
     },
     "/studies/{studyId}/patients/{patientId}/clinical-events": {
       "get": {
-        "tags": [
-          "Clinical Events"
-        ],
+        "tags": ["Clinical Events"],
         "summary": "Get all clinical events of a patient in a study",
         "operationId": "getAllClinicalEventsOfPatientInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3229,12 +2753,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3279,10 +2798,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3300,14 +2816,10 @@
     },
     "/studies/{studyId}/patients/{patientId}/samples": {
       "get": {
-        "tags": [
-          "Samples"
-        ],
+        "tags": ["Samples"],
         "summary": "Get all samples of a patient in a study",
         "operationId": "getAllSamplesOfPatientInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3330,12 +2842,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3367,10 +2874,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "sampleId",
-              "sampleType"
-            ]
+            "enum": ["sampleId", "sampleType"]
           },
           {
             "name": "direction",
@@ -3379,10 +2883,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3400,14 +2901,10 @@
     },
     "/studies/{studyId}/sample-lists": {
       "get": {
-        "tags": [
-          "Sample Lists"
-        ],
+        "tags": ["Sample Lists"],
         "summary": "Get all sample lists in a study",
         "operationId": "getAllSampleListsInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3423,12 +2920,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3475,10 +2967,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3496,14 +2985,10 @@
     },
     "/studies/{studyId}/samples": {
       "get": {
-        "tags": [
-          "Samples"
-        ],
+        "tags": ["Samples"],
         "summary": "Get all samples in a study",
         "operationId": "getAllSamplesInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3519,12 +3004,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3556,10 +3036,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "sampleId",
-              "sampleType"
-            ]
+            "enum": ["sampleId", "sampleType"]
           },
           {
             "name": "direction",
@@ -3568,10 +3045,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3589,14 +3063,10 @@
     },
     "/studies/{studyId}/samples/{sampleId}": {
       "get": {
-        "tags": [
-          "Samples"
-        ],
+        "tags": ["Samples"],
         "summary": "Get a sample in a study",
         "operationId": "getSampleInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3625,14 +3095,10 @@
     },
     "/studies/{studyId}/samples/{sampleId}/clinical-data": {
       "get": {
-        "tags": [
-          "Clinical Data"
-        ],
+        "tags": ["Clinical Data"],
         "summary": "Get all clinical data of a sample in a study",
         "operationId": "getAllClinicalDataOfSampleInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3662,12 +3128,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3699,10 +3160,7 @@
             "description": "Name of the property that the result list is sorted by",
             "required": false,
             "type": "string",
-            "enum": [
-              "clinicalAttributeId",
-              "value"
-            ]
+            "enum": ["clinicalAttributeId", "value"]
           },
           {
             "name": "direction",
@@ -3711,10 +3169,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3732,14 +3187,10 @@
     },
     "/studies/{studyId}/samples/{sampleId}/copy-number-segments": {
       "get": {
-        "tags": [
-          "Copy Number Segments"
-        ],
+        "tags": ["Copy Number Segments"],
         "summary": "Get copy number segments in a sample in a study",
         "operationId": "getCopyNumberSegmentsInSampleInStudyUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3769,12 +3220,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -3821,10 +3267,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -3842,14 +3285,10 @@
     },
     "/studies/{studyId}/tags": {
       "get": {
-        "tags": [
-          "Studies"
-        ],
+        "tags": ["Studies"],
         "summary": "Get the tags of a study",
         "operationId": "getTagsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -3873,9 +3312,7 @@
   "definitions": {
     "CancerStudy": {
       "type": "object",
-      "required": [
-        "studyId"
-      ],
+      "required": ["studyId"],
       "properties": {
         "allSampleCount": {
           "type": "integer",
@@ -4034,11 +3471,7 @@
     },
     "ClinicalData": {
       "type": "object",
-      "required": [
-        "clinicalAttributeId",
-        "patientId",
-        "studyId"
-      ],
+      "required": ["clinicalAttributeId", "patientId", "studyId"],
       "properties": {
         "clinicalAttribute": {
           "$ref": "#/definitions/ClinicalAttribute"
@@ -4117,11 +3550,7 @@
     },
     "ClinicalEvent": {
       "type": "object",
-      "required": [
-        "eventType",
-        "patientId",
-        "studyId"
-      ],
+      "required": ["eventType", "patientId", "studyId"],
       "properties": {
         "attributes": {
           "type": "array",
@@ -4157,10 +3586,7 @@
     },
     "ClinicalEventData": {
       "type": "object",
-      "required": [
-        "key",
-        "value"
-      ],
+      "required": ["key", "value"],
       "properties": {
         "key": {
           "type": "string"
@@ -4335,10 +3761,7 @@
     },
     "Gene": {
       "type": "object",
-      "required": [
-        "entrezGeneId",
-        "hugoGeneSymbol"
-      ],
+      "required": ["entrezGeneId", "hugoGeneSymbol"],
       "properties": {
         "chromosome": {
           "type": "string"
@@ -4365,9 +3788,7 @@
     },
     "GenePanel": {
       "type": "object",
-      "required": [
-        "genePanelId"
-      ],
+      "required": ["genePanelId"],
       "properties": {
         "description": {
           "type": "string"
@@ -4438,9 +3859,7 @@
     },
     "GenePanelMultipleStudyFilter": {
       "type": "object",
-      "required": [
-        "sampleMolecularIdentifiers"
-      ],
+      "required": ["sampleMolecularIdentifiers"],
       "properties": {
         "sampleMolecularIdentifiers": {
           "type": "array",
@@ -4453,10 +3872,7 @@
     },
     "GenePanelToGene": {
       "type": "object",
-      "required": [
-        "entrezGeneId",
-        "hugoGeneSymbol"
-      ],
+      "required": ["entrezGeneId", "hugoGeneSymbol"],
       "properties": {
         "entrezGeneId": {
           "type": "integer",
@@ -4521,10 +3937,7 @@
     },
     "MolecularProfile": {
       "type": "object",
-      "required": [
-        "molecularProfileId",
-        "studyId"
-      ],
+      "required": ["molecularProfileId", "studyId"],
       "properties": {
         "datatype": {
           "type": "string"
@@ -4724,12 +4137,7 @@
     },
     "MutationCountByPosition": {
       "type": "object",
-      "required": [
-        "count",
-        "entrezGeneId",
-        "proteinPosEnd",
-        "proteinPosStart"
-      ],
+      "required": ["count", "entrezGeneId", "proteinPosEnd", "proteinPosStart"],
       "properties": {
         "count": {
           "type": "integer",
@@ -4863,10 +4271,7 @@
     },
     "Patient": {
       "type": "object",
-      "required": [
-        "patientId",
-        "studyId"
-      ],
+      "required": ["patientId", "studyId"],
       "properties": {
         "cancerStudy": {
           "$ref": "#/definitions/CancerStudy"
@@ -4918,11 +4323,7 @@
     },
     "Sample": {
       "type": "object",
-      "required": [
-        "patientId",
-        "sampleId",
-        "studyId"
-      ],
+      "required": ["patientId", "sampleId", "studyId"],
       "properties": {
         "copyNumberSegmentPresent": {
           "type": "boolean"
@@ -4998,9 +4399,7 @@
     },
     "SampleList": {
       "type": "object",
-      "required": [
-        "sampleListId"
-      ],
+      "required": ["sampleListId"],
       "properties": {
         "category": {
           "type": "string"
@@ -5044,9 +4443,7 @@
     },
     "TypeOfCancer": {
       "type": "object",
-      "required": [
-        "cancerTypeId"
-      ],
+      "required": ["cancerTypeId"],
       "properties": {
         "cancerTypeId": {
           "type": "string"

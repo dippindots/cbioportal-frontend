@@ -31,8 +31,6 @@
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
 
-
-
 /*
  * Javascript library to communication with java webstart application
  */
@@ -42,8 +40,8 @@ var SCRIPT_ELEMENT_ID = "igv";
 var timeoutVar; // used to set/unset timeout handlers
 var sessionURL; // the session (or data) url
 var genome; // the genome parameter
-var locus;  // the locus parameter
-var name;   // the name parameter
+var locus; // the locus parameter
+var name; // the name parameter
 var merge;
 var igv_data_fetched = false;
 var igvForSegViewResp = {};
@@ -52,19 +50,19 @@ var igvForSegViewResp = {};
  * Function to determine webstart version - taken from sun site
  */
 function webstartVersionCheck(versionString) {
-    // Mozilla may not recognize new plugins without this refresh
-    navigator.plugins.refresh(true);
-    // First, determine if Web Start is available
-    if (navigator.mimeTypes['application/x-java-jnlp-file']) {
-        // Next, check for appropriate version family
-        for (var i = 0; i < navigator.mimeTypes.length; ++i) {
-            var pluginType = navigator.mimeTypes[i].type;
-            if (pluginType == "application/x-java-applet;version=" + versionString) {
-                return true;
-            }
-        }
+  // Mozilla may not recognize new plugins without this refresh
+  navigator.plugins.refresh(true);
+  // First, determine if Web Start is available
+  if (navigator.mimeTypes["application/x-java-jnlp-file"]) {
+    // Next, check for appropriate version family
+    for (var i = 0; i < navigator.mimeTypes.length; ++i) {
+      var pluginType = navigator.mimeTypes[i].type;
+      if (pluginType == "application/x-java-applet;version=" + versionString) {
+        return true;
+      }
     }
-    return true;
+  }
+  return true;
 }
 
 /*
@@ -73,72 +71,78 @@ function webstartVersionCheck(versionString) {
  * invoked we conclude IGV is not running and launch it via Java WebStart.
  */
 function timeoutHandler() {
+  var webstart_url =
+    "http://www.broadinstitute.org/igv/projects/current/igv.php";
+  if (sessionURL.indexOf("dataformat=.bam") != -1) {
+    webstart_url =
+      "http://www.broadinstitute.org/igv/projects/dev/igv_su2c.php";
+  }
 
-    var webstart_url = "http://www.broadinstitute.org/igv/projects/current/igv.php";
-	if (sessionURL.indexOf("dataformat=.bam") != -1) {
-		webstart_url = "http://www.broadinstitute.org/igv/projects/dev/igv_su2c.php";
-	}
+  if (sessionURL) {
+    webstart_url += "?sessionURL=" + sessionURL;
+    if (genome) {
+      webstart_url += "&genome=" + genome;
+    }
+    if (locus) {
+      webstart_url += "&locus=" + locus;
+    }
+    if (name) {
+      webstart_url += "&name=" + name;
+    }
+    if (merge) {
+      webstart_url += "&merge=" + merge;
+    }
+  }
 
-    if (sessionURL) {
-        webstart_url += "?sessionURL=" + sessionURL;
-        if (genome) {
-            webstart_url += "&genome=" + genome;
-        }
-        if (locus) {
-            webstart_url += "&locus=" + locus;
-        }
-        if (name) {
-            webstart_url += "&name=" + name;
-        }
-        if (merge) {
-            webstart_url += "&merge=" + merge;
-        }
-    }
-
-    // determine if webstart is available - code taken from sun site
-    var userAgent = navigator.userAgent.toLowerCase();
-    // user is running windows
-    if (userAgent.indexOf("msie") != -1 && userAgent.indexOf("win") != -1) {
-        document.write("<OBJECT " +
-            "codeBase=http://java.sun.com/update/1.5.0/jinstall-1_5_0_05-windows-i586.cab " +
-            "classid=clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284 height=0 width=0>");
-        document.write("<PARAM name=app VALUE=" + webstart_url + ">");
-        document.write("<PARAM NAME=back VALUE=true>");
-        // alternate html for browsers which cannot instantiate the object
-        document.write("<A href=\"http://java.sun.com/j2se/1.5.0/download.html\">Download Java WebStart</A>");
-        document.write("</OBJECT>");
-    }
-    // user is not running windows
-    else if (webstartVersionCheck("1.6")) {
-        window.location = webstart_url;
-    }
-    // user does not have jre installed or lacks appropriate version - direct them to sun download site
-    else {
-        window.open("http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&host=java.com",
-            "needdownload");
-    }
+  // determine if webstart is available - code taken from sun site
+  var userAgent = navigator.userAgent.toLowerCase();
+  // user is running windows
+  if (userAgent.indexOf("msie") != -1 && userAgent.indexOf("win") != -1) {
+    document.write(
+      "<OBJECT " +
+        "codeBase=http://java.sun.com/update/1.5.0/jinstall-1_5_0_05-windows-i586.cab " +
+        "classid=clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284 height=0 width=0>"
+    );
+    document.write("<PARAM name=app VALUE=" + webstart_url + ">");
+    document.write("<PARAM NAME=back VALUE=true>");
+    // alternate html for browsers which cannot instantiate the object
+    document.write(
+      '<A href="http://java.sun.com/j2se/1.5.0/download.html">Download Java WebStart</A>'
+    );
+    document.write("</OBJECT>");
+  }
+  // user is not running windows
+  else if (webstartVersionCheck("1.6")) {
+    window.location = webstart_url;
+  }
+  // user does not have jre installed or lacks appropriate version - direct them to sun download site
+  else {
+    window.open(
+      "http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&host=java.com",
+      "needdownload"
+    );
+  }
 }
 
 /*
  * This function is called by IGV in the response to the GET request to load the data.  It cancels the JNLP load.
  */
 function callBack() {
-    clearTimeout(timeoutVar);
+  clearTimeout(timeoutVar);
 }
 
 /*
  * Called to disable a link to the webstart.
  */
 function disableLink(linkID) {
-
-    var link = document.getElementById(linkID);
-    if (link) {
-        link.onclick = function() {
-            return false;
-        };
-        link.style.cursor = "default";
-        link.style.color = "#000000";
-    }
+  var link = document.getElementById(linkID);
+  if (link) {
+    link.onclick = function() {
+      return false;
+    };
+    link.style.cursor = "default";
+    link.style.color = "#000000";
+  }
 }
 
 /**
@@ -155,87 +159,101 @@ function disableLink(linkID) {
  * @param locusString -- an IGV locus string, e.g. chr1:100,000-200,000  or EGFR.  See IGV doc for full details
  * @param trackName -- name for the track resulting from dataURL.  This only works for "single-track" formats, e.g. wig.
  */
-function appRequest(port, dataUrl, genomeID, mergeFlag, locusString, trackName) {
+function appRequest(
+  port,
+  dataUrl,
+  genomeID,
+  mergeFlag,
+  locusString,
+  trackName
+) {
+  // be good and remove the previous cytoscape script element
+  // although, based on debugging, i'm not sure this really does anything
+  var oldScript = document.getElementById(SCRIPT_ELEMENT_ID);
+  if (oldScript) {
+    oldScript.parentNode.removeChild(oldScript);
+  }
 
-    // be good and remove the previous cytoscape script element
-    // although, based on debugging, i'm not sure this really does anything
-    var oldScript = document.getElementById(SCRIPT_ELEMENT_ID);
-    if (oldScript) {
-        oldScript.parentNode.removeChild(oldScript);
-    }
+  var localURL =
+    "http://127.0.0.1:" +
+    port +
+    "/load?file=" +
+    dataUrl +
+    "&callback=callBack();";
 
-    var localURL = "http://127.0.0.1:" + port + "/load?file=" + dataUrl + "&callback=callBack();";
+  sessionURL = dataUrl;
+  genome = genomeID;
+  locus = locusString;
+  merge = mergeFlag;
+  name = trackName;
 
-    sessionURL = dataUrl;
-    genome = genomeID;
-    locus = locusString;
-    merge = mergeFlag;
-    name = trackName;
+  if (genomeID) {
+    localURL += "&genome=" + genomeID;
+  }
+  if (locusString) {
+    localURL += "&locus=" + locusString;
+  }
+  if (mergeFlag) {
+    localURL += "&merge=" + mergeFlag;
+  }
+  if (trackName) {
+    localURL += "&name=" + trackName;
+  }
 
+  // create new script
+  var newScript = document.createElement("script");
+  newScript.id = SCRIPT_ELEMENT_ID;
+  newScript.setAttribute("type", "text/javascript");
+  newScript.setAttribute("src", localURL);
 
-    if (genomeID) {
-        localURL += "&genome=" + genomeID;
-    }
-    if (locusString) {
-        localURL += "&locus=" + locusString;
-    }
-    if (mergeFlag) {
-        localURL += "&merge=" + mergeFlag;
-    }
-    if (trackName) {
-        localURL += "&name=" + trackName;
-    }
+  // add new script to document (head section)
+  var head = document.getElementsByTagName("head")[0];
+  head.appendChild(newScript);
 
+  // disable link
+  // we do this because some browsers
+  // will not fetch data if the url has been fetched in the past
+  //disableLink("1");
 
-    // create new script
-    var newScript = document.createElement("script");
-    newScript.id = SCRIPT_ELEMENT_ID;
-    newScript.setAttribute("type", "text/javascript");
-    newScript.setAttribute("src", localURL);
-
-    // add new script to document (head section)
-    var head = document.getElementsByTagName("head")[0];
-    head.appendChild(newScript);
-
-    // disable link
-    // we do this because some browsers
-    // will not fetch data if the url has been fetched in the past
-    //disableLink("1");
-
-    // set timeout - handler for when IGV is not running
-    timeoutVar = setTimeout("timeoutHandler()", 2000);
-
+  // set timeout - handler for when IGV is not running
+  timeoutVar = setTimeout("timeoutHandler()", 2000);
 }
-
 
 function prepIGVForSegView(_studyId) {
-	if (igv_data_fetched) {
-		prepIGVLaunch(igvForSegViewResp['segfileUrl'],
-				igvForSegViewResp['geneList'],
-				igvForSegViewResp['referenceId'], igvForSegViewResp['fileName'])
-	} else {
-		$.when($.ajax({
-			method : "POST",
-			url : 'igvlinking.json',
-			data : {
-				cmd : 'get_igv_args',
-				cancer_study_id : _studyId,
-				gene_list : window.QuerySession.getQueryGenes().join(" ")
-			}
-		})).then(
-				function(response) {
-					igvForSegViewResp = response;
-					igv_data_fetched = true;
-					prepIGVLaunch(response['segfileUrl'], response['geneList'],
-							response['referenceId'], response['fileName'])
-				});
-	}
+  if (igv_data_fetched) {
+    prepIGVLaunch(
+      igvForSegViewResp["segfileUrl"],
+      igvForSegViewResp["geneList"],
+      igvForSegViewResp["referenceId"],
+      igvForSegViewResp["fileName"]
+    );
+  } else {
+    $.when(
+      $.ajax({
+        method: "POST",
+        url: "igvlinking.json",
+        data: {
+          cmd: "get_igv_args",
+          cancer_study_id: _studyId,
+          gene_list: window.QuerySession.getQueryGenes().join(" ")
+        }
+      })
+    ).then(function(response) {
+      igvForSegViewResp = response;
+      igv_data_fetched = true;
+      prepIGVLaunch(
+        response["segfileUrl"],
+        response["geneList"],
+        response["referenceId"],
+        response["fileName"]
+      );
+    });
+  }
 }
 function prepIGVLaunch(dataURL, locusString, referenceGenome, trackName) {
+  var port = 60151;
+  var genomeID = referenceGenome;
+  var mergeFlag = false;
 
-    var port = 60151;
-    var genomeID = referenceGenome;
-    var mergeFlag = false;
-
-    appRequest(port, dataURL, genomeID, mergeFlag, locusString, trackName);
+  appRequest(port, dataURL, genomeID, mergeFlag, locusString, trackName);
 }

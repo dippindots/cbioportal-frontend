@@ -1,7 +1,6 @@
 [
   {
-    "gene":
-    {
+    "gene": {
       "chromosome": "string",
       "cytoband": "string",
       "entrezGeneId": "number",
@@ -37,8 +36,7 @@
     "linkXvar": "string"
   },
   {
-    "gene":
-    {
+    "gene": {
       "chromosome": "21",
       "cytoband": null,
       "entrezGeneId": 4685,
@@ -74,8 +72,7 @@
     "linkXvar": "http://mutationassessor.org/r2/?cm=var&var=hg19,21,22841054,C,A&fts=all"
   },
   {
-    "gene":
-    {
+    "gene": {
       "chromosome": "6",
       "cytoband": null,
       "entrezGeneId": 23195,
@@ -111,8 +108,7 @@
     "linkXvar": "http://mutationassessor.org/r2/?cm=var&var=hg19,6,90368337,G,A&fts=all"
   },
   {
-    "gene":
-    {
+    "gene": {
       "chromosome": "5",
       "cytoband": null,
       "entrezGeneId": 324,
@@ -148,8 +144,7 @@
     "linkXvar": "http://mutationassessor.org/r2/?cm=var&var=hg19,5,112175577,A,G&fts=all"
   },
   {
-    "gene":
-    {
+    "gene": {
       "chromosome": "5",
       "cytoband": null,
       "entrezGeneId": 324,

@@ -38,24 +38,15 @@
       "description": "My Variant Info Controller"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
     "/annotation/summary": {
       "post": {
-        "tags": [
-          "annotation-summary-controller"
-        ],
+        "tags": ["annotation-summary-controller"],
         "summary": "Retrieves VEP annotation summary for the provided list of variants",
         "operationId": "fetchVariantAnnotationSummaryPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -83,10 +74,7 @@
             "required": false,
             "type": "string",
             "default": "ALL",
-            "enum": [
-              "ALL",
-              "CANONICAL"
-            ]
+            "enum": ["ALL", "CANONICAL"]
           }
         ],
         "responses": {
@@ -104,17 +92,11 @@
     },
     "/annotation/summary/{variant}": {
       "get": {
-        "tags": [
-          "annotation-summary-controller"
-        ],
+        "tags": ["annotation-summary-controller"],
         "summary": "Retrieves VEP annotation summary for the provided variant",
         "operationId": "fetchVariantAnnotationSummaryGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variant",
@@ -137,10 +119,7 @@
             "required": false,
             "type": "string",
             "default": "ALL",
-            "enum": [
-              "ALL",
-              "CANONICAL"
-            ]
+            "enum": ["ALL", "CANONICAL"]
           }
         ],
         "responses": {
@@ -155,17 +134,11 @@
     },
     "/cancer_hotspots/genomic": {
       "post": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for the provided list of genomic locations",
         "operationId": "fetchHotspotAnnotationByGenomicLocationPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -195,17 +168,11 @@
     },
     "/cancer_hotspots/genomic/{genomicLocation}": {
       "get": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for a specific genomic location",
         "operationId": "fetchHotspotAnnotationByGenomicLocationGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "genomicLocation",
@@ -230,17 +197,11 @@
     },
     "/cancer_hotspots/hgvs": {
       "post": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for the provided list of variants",
         "operationId": "fetchHotspotAnnotationByHgvsPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -270,17 +231,11 @@
     },
     "/cancer_hotspots/hgvs/{variant}": {
       "get": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for a specific variant",
         "operationId": "fetchHotspotAnnotationByHgvsGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variant",
@@ -305,17 +260,11 @@
     },
     "/cancer_hotspots/proteinLocations": {
       "post": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for the provided list of transcript id, protein location and mutation type",
         "operationId": "fetchHotspotAnnotationByProteinLocationsPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -345,17 +294,11 @@
     },
     "/cancer_hotspots/transcript": {
       "post": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for the provided list of transcript ID",
         "operationId": "fetchHotspotAnnotationByTranscriptIdPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -385,17 +328,11 @@
     },
     "/cancer_hotspots/transcript/{transcriptId}": {
       "get": {
-        "tags": [
-          "cancer-hotspots-controller"
-        ],
+        "tags": ["cancer-hotspots-controller"],
         "summary": "Retrieves hotspot annotations for the provided transcript ID",
         "operationId": "fetchHotspotAnnotationByTranscriptIdGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "transcriptId",
@@ -420,17 +357,11 @@
     },
     "/isoform_override": {
       "post": {
-        "tags": [
-          "isoform-override-controller"
-        ],
+        "tags": ["isoform-override-controller"],
         "summary": "Gets the isoform override information for the specified source and the list of transcript ids",
         "operationId": "fetchIsoformOverridePOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "source",
@@ -467,17 +398,11 @@
     },
     "/isoform_override/sources": {
       "get": {
-        "tags": [
-          "isoform-override-controller"
-        ],
+        "tags": ["isoform-override-controller"],
         "summary": "Gets a list of available isoform override data sources",
         "operationId": "fetchIsoformOverrideSourcesGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -493,17 +418,11 @@
     },
     "/isoform_override/{source}": {
       "get": {
-        "tags": [
-          "isoform-override-controller"
-        ],
+        "tags": ["isoform-override-controller"],
         "summary": "Gets the isoform override information for the specified source",
         "operationId": "fetchAllIsoformOverridesGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "source",
@@ -528,17 +447,11 @@
     },
     "/isoform_override/{source}/{transcriptId}": {
       "get": {
-        "tags": [
-          "isoform-override-controller"
-        ],
+        "tags": ["isoform-override-controller"],
         "summary": "Gets the isoform override information for the specified source and transcript id",
         "operationId": "fetchIsoformOverrideGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "source",
@@ -567,17 +480,11 @@
     },
     "/mutation_assessor": {
       "post": {
-        "tags": [
-          "mutation-assessor-controller"
-        ],
+        "tags": ["mutation-assessor-controller"],
         "summary": "Retrieves mutation assessor information for the provided list of variants",
         "operationId": "postMutationAssessorAnnotation",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -607,17 +514,11 @@
     },
     "/mutation_assessor/{variant}": {
       "get": {
-        "tags": [
-          "mutation-assessor-controller"
-        ],
+        "tags": ["mutation-assessor-controller"],
         "summary": "Retrieves mutation assessor information for the provided list of variants",
         "operationId": "fetchMutationAssessorAnnotationGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variant",
@@ -639,17 +540,11 @@
     },
     "/my_variant_info/variant": {
       "post": {
-        "tags": [
-          "my-variant-info-controller"
-        ],
+        "tags": ["my-variant-info-controller"],
         "summary": "Retrieves myvariant information for the provided list of variants",
         "operationId": "postMyVariantInfoAnnotation",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -679,17 +574,11 @@
     },
     "/my_variant_info/variant/{variant}": {
       "get": {
-        "tags": [
-          "my-variant-info-controller"
-        ],
+        "tags": ["my-variant-info-controller"],
         "summary": "Retrieves myvariant information for the provided list of variants",
         "operationId": "fetchMyVariantInfoAnnotationGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variant",
@@ -711,17 +600,11 @@
     },
     "/xrefs/{accession}": {
       "get": {
-        "tags": [
-          "cross-reference-controller"
-        ],
+        "tags": ["cross-reference-controller"],
         "summary": "Perform lookups of Ensembl identifiers and retrieve their external references in other databases",
         "operationId": "fetchGeneXrefsGET_1",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "accession",
@@ -749,11 +632,7 @@
   "definitions": {
     "AggregatedHotspots": {
       "type": "object",
-      "required": [
-        "genomicLocation",
-        "hotspots",
-        "variant"
-      ],
+      "required": ["genomicLocation", "hotspots", "variant"],
       "properties": {
         "genomicLocation": {
           "description": "Genomic Location",
@@ -1150,9 +1029,7 @@
     },
     "IsoformOverride": {
       "type": "object",
-      "required": [
-        "transcriptId"
-      ],
+      "required": ["transcriptId"],
       "properties": {
         "ccdsId": {
           "type": "string",
@@ -1174,9 +1051,7 @@
     },
     "MutationAssessor": {
       "type": "object",
-      "required": [
-        "input"
-      ],
+      "required": ["input"],
       "properties": {
         "codonStartPosition": {
           "type": "string",
@@ -1360,12 +1235,7 @@
     },
     "ProteinLocation": {
       "type": "object",
-      "required": [
-        "end",
-        "mutationType",
-        "start",
-        "transcriptId"
-      ],
+      "required": ["end", "mutationType", "start", "transcriptId"],
       "properties": {
         "transcriptId": {
           "type": "string",
@@ -1398,9 +1268,7 @@
     },
     "TranscriptConsequenceSummary": {
       "type": "object",
-      "required": [
-        "transcriptId"
-      ],
+      "required": ["transcriptId"],
       "properties": {
         "codonChange": {
           "type": "string",

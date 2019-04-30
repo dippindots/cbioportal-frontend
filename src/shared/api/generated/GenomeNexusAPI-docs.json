@@ -38,24 +38,15 @@
       "description": "Ensembl Controller"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
     "/annotation": {
       "post": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the provided list of variants",
         "operationId": "fetchVariantAnnotationPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -104,17 +95,11 @@
     },
     "/annotation/dbsnp/": {
       "post": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the provided list of dbSNP ids",
         "operationId": "fetchVariantAnnotationByIdPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -163,17 +148,11 @@
     },
     "/annotation/dbsnp/{variantId}": {
       "get": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the give dbSNP id",
         "operationId": "fetchVariantAnnotationByIdGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variantId",
@@ -214,17 +193,11 @@
     },
     "/annotation/genomic": {
       "post": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the provided list of genomic locations",
         "operationId": "fetchVariantAnnotationByGenomicLocationPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -273,17 +246,11 @@
     },
     "/annotation/genomic/{genomicLocation}": {
       "get": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the provided genomic location",
         "operationId": "fetchVariantAnnotationByGenomicLocationGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "genomicLocation",
@@ -324,17 +291,11 @@
     },
     "/annotation/{variant}": {
       "get": {
-        "tags": [
-          "annotation-controller"
-        ],
+        "tags": ["annotation-controller"],
         "summary": "Retrieves VEP annotation for the provided variant",
         "operationId": "fetchVariantAnnotationGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "variant",
@@ -375,17 +336,11 @@
     },
     "/ensembl/canonical-gene/entrez": {
       "post": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves canonical Ensembl Gene ID by Entrez Gene Ids",
         "operationId": "fetchCanonicalEnsemblGeneIdByEntrezGeneIdsPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -415,17 +370,11 @@
     },
     "/ensembl/canonical-gene/entrez/{entrezGeneId}": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl canonical gene id by Entrez Gene Id",
         "operationId": "fetchCanonicalEnsemblGeneIdByEntrezGeneIdGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "entrezGeneId",
@@ -447,17 +396,11 @@
     },
     "/ensembl/canonical-gene/hgnc": {
       "post": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves canonical Ensembl Gene ID by Hugo Symbols",
         "operationId": "fetchCanonicalEnsemblGeneIdByHugoSymbolsPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -487,17 +430,11 @@
     },
     "/ensembl/canonical-gene/hgnc/{hugoSymbol}": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl canonical gene id by Hugo Symbol",
         "operationId": "fetchCanonicalEnsemblGeneIdByHugoSymbolGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "hugoSymbol",
@@ -519,17 +456,11 @@
     },
     "/ensembl/canonical-transcript/hgnc": {
       "post": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl canonical transcripts by Hugo Symbols",
         "operationId": "fetchCanonicalEnsemblTranscriptsByHugoSymbolsPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -567,17 +498,11 @@
     },
     "/ensembl/canonical-transcript/hgnc/{hugoSymbol}": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl canonical transcript by Hugo Symbol",
         "operationId": "fetchCanonicalEnsemblTranscriptByHugoSymbolGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "hugoSymbol",
@@ -607,17 +532,11 @@
     },
     "/ensembl/transcript": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl Transcripts by protein ID, and gene ID. Retrieves all transcripts in case no query parameter provided",
         "operationId": "fetchEnsemblTranscriptsGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneId",
@@ -654,17 +573,11 @@
         }
       },
       "post": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves Ensembl Transcripts by Ensembl transcript IDs, hugo Symbols, protein IDs, or gene IDs",
         "operationId": "fetchEnsemblTranscriptsByEnsemblFilterPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -691,17 +604,11 @@
     },
     "/ensembl/transcript/{transcriptId}": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Retrieves the transcript by an Ensembl transcript ID",
         "operationId": "fetchEnsemblTranscriptByTranscriptIdGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "transcriptId",
@@ -723,17 +630,11 @@
     },
     "/ensembl/xrefs": {
       "get": {
-        "tags": [
-          "ensembl-controller"
-        ],
+        "tags": ["ensembl-controller"],
         "summary": "Perform lookups of Ensembl identifiers and retrieve their external references in other databases",
         "operationId": "fetchGeneXrefsGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "accession",
@@ -758,17 +659,11 @@
     },
     "/pdb/header": {
       "post": {
-        "tags": [
-          "pdb-controller"
-        ],
+        "tags": ["pdb-controller"],
         "summary": "Retrieves PDB header info by a PDB id",
         "operationId": "fetchPdbHeaderPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -798,17 +693,11 @@
     },
     "/pdb/header/{pdbId}": {
       "get": {
-        "tags": [
-          "pdb-controller"
-        ],
+        "tags": ["pdb-controller"],
         "summary": "Retrieves PDB header info by a PDB id",
         "operationId": "fetchPdbHeaderGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "pdbId",
@@ -830,17 +719,11 @@
     },
     "/pfam/domain": {
       "post": {
-        "tags": [
-          "pfam-controller"
-        ],
+        "tags": ["pfam-controller"],
         "summary": "Retrieves PFAM domains by PFAM domain accession IDs",
         "operationId": "fetchPfamDomainsByPfamAccessionPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -870,17 +753,11 @@
     },
     "/pfam/domain/{pfamAccession}": {
       "get": {
-        "tags": [
-          "pfam-controller"
-        ],
+        "tags": ["pfam-controller"],
         "summary": "Retrieves a PFAM domain by a PFAM domain ID",
         "operationId": "fetchPfamDomainsByAccessionGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "pfamAccession",
@@ -902,17 +779,11 @@
     },
     "/ptm/experimental": {
       "get": {
-        "tags": [
-          "ptm-controller"
-        ],
+        "tags": ["ptm-controller"],
         "summary": "Retrieves PTM entries by Ensembl Transcript ID",
         "operationId": "fetchPostTranslationalModificationsGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "ensemblTranscriptId",
@@ -935,17 +806,11 @@
         }
       },
       "post": {
-        "tags": [
-          "ptm-controller"
-        ],
+        "tags": ["ptm-controller"],
         "summary": "Retrieves PTM entries by Ensembl Transcript IDs",
         "operationId": "fetchPostTransactionalModificationsByPtmFilterPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -972,17 +837,11 @@
     },
     "/version": {
       "get": {
-        "tags": [
-          "info-controller"
-        ],
+        "tags": ["info-controller"],
         "summary": "Retrieve Genome Nexus Version",
         "operationId": "fetchVersionGET",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1234,10 +1093,7 @@
     },
     "EnsemblGene": {
       "type": "object",
-      "required": [
-        "geneId",
-        "hugoSymbol"
-      ],
+      "required": ["geneId", "hugoSymbol"],
       "properties": {
         "geneId": {
           "type": "string",
@@ -1269,11 +1125,7 @@
     },
     "EnsemblTranscript": {
       "type": "object",
-      "required": [
-        "geneId",
-        "proteinId",
-        "transcriptId"
-      ],
+      "required": ["geneId", "proteinId", "transcriptId"],
       "properties": {
         "transcriptId": {
           "type": "string",
@@ -1597,9 +1449,7 @@
     },
     "MutationAssessor": {
       "type": "object",
-      "required": [
-        "input"
-      ],
+      "required": ["input"],
       "properties": {
         "codonStartPosition": {
           "type": "string",
@@ -1805,10 +1655,7 @@
     },
     "PdbHeader": {
       "type": "object",
-      "required": [
-        "pdbId",
-        "title"
-      ],
+      "required": ["pdbId", "title"],
       "properties": {
         "compound": {
           "type": "object"
@@ -1828,10 +1675,7 @@
     },
     "PfamDomain": {
       "type": "object",
-      "required": [
-        "name",
-        "pfamAccession"
-      ],
+      "required": ["name", "pfamAccession"],
       "properties": {
         "description": {
           "type": "string",
@@ -1849,11 +1693,7 @@
     },
     "PfamDomainRange": {
       "type": "object",
-      "required": [
-        "pfamDomainEnd",
-        "pfamDomainId",
-        "pfamDomainStart"
-      ],
+      "required": ["pfamDomainEnd", "pfamDomainId", "pfamDomainStart"],
       "properties": {
         "pfamDomainId": {
           "type": "string",
@@ -1944,9 +1784,7 @@
     },
     "TranscriptConsequence": {
       "type": "object",
-      "required": [
-        "transcript_id"
-      ],
+      "required": ["transcript_id"],
       "properties": {
         "amino_acids": {
           "type": "string",
@@ -2041,9 +1879,7 @@
     },
     "TranscriptConsequenceSummary": {
       "type": "object",
-      "required": [
-        "transcriptId"
-      ],
+      "required": ["transcriptId"],
       "properties": {
         "codonChange": {
           "type": "string",
@@ -2096,12 +1932,7 @@
     },
     "UntranslatedRegion": {
       "type": "object",
-      "required": [
-        "end",
-        "start",
-        "strand",
-        "type"
-      ],
+      "required": ["end", "start", "strand", "type"],
       "properties": {
         "type": {
           "type": "string",
@@ -2126,10 +1957,7 @@
     },
     "VariantAnnotation": {
       "type": "object",
-      "required": [
-        "id",
-        "variant"
-      ],
+      "required": ["id", "variant"],
       "properties": {
         "allele_string": {
           "type": "string",

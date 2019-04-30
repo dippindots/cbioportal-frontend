@@ -28,71 +28,68 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
+function validGeneSet(downloadDataParameters) {
+  var geneIds = "";
 
-function validGeneSet(downloadDataParameters)
-{
-    var geneIds = "";
+  jQuery.each(downloadDataParameters, function(i, parameter) {
+    if (parameter.name == "gene_list") {
+      geneIds = parameter.value;
+    }
+  });
 
-    jQuery.each(downloadDataParameters, function(i, parameter) {
-        if (parameter.name == "gene_list") {
-            geneIds = parameter.value;
-        }
-    });
-
-    return !(geneIds == "");
+  return !(geneIds == "");
 }
 
-function validCaseSet(downloadDataParameters)
-{
-    var caseIds = "";
-    var caseSetId = "";
-    var missingCaseSetId = true;
-    var USER_DEFINED_CASELIST = "-1";
+function validCaseSet(downloadDataParameters) {
+  var caseIds = "";
+  var caseSetId = "";
+  var missingCaseSetId = true;
+  var USER_DEFINED_CASELIST = "-1";
 
-    jQuery.each(downloadDataParameters, function(i, parameter) {
-        if (parameter.name == "case_set_id") {
-            missingCaseSetId = false;
-            caseSetId = parameter.value;
-        }
-        else if (parameter.name == "case_ids") {
-            caseIds = parameter.value;
-        }
-    });
+  jQuery.each(downloadDataParameters, function(i, parameter) {
+    if (parameter.name == "case_set_id") {
+      missingCaseSetId = false;
+      caseSetId = parameter.value;
+    } else if (parameter.name == "case_ids") {
+      caseIds = parameter.value;
+    }
+  });
 
-    return !(missingCaseSetId || (caseSetId == USER_DEFINED_CASELIST && caseIds == ""));
+  return !(
+    missingCaseSetId ||
+    (caseSetId == USER_DEFINED_CASELIST && caseIds == "")
+  );
 }
 
-function validGenomicProfile(downloadDataParameters)
-{
-    var foundGeneticProfileIds = false;
+function validGenomicProfile(downloadDataParameters) {
+  var foundGeneticProfileIds = false;
 
-    jQuery.each(downloadDataParameters, function(i, parameter) {
-        if (parameter.name == "genetic_profile_ids") {
-            foundGeneticProfileIds = true;
-        }
-    });
+  jQuery.each(downloadDataParameters, function(i, parameter) {
+    if (parameter.name == "genetic_profile_ids") {
+      foundGeneticProfileIds = true;
+    }
+  });
 
-    return foundGeneticProfileIds;
+  return foundGeneticProfileIds;
 }
 
-function validDownloadDataForm(downloadDataParameters)
-{
-    if (!validGenomicProfile(downloadDataParameters)) {
-        alert("Invalid Genomic Profile Selected.");
-        return false;
-    }
+function validDownloadDataForm(downloadDataParameters) {
+  if (!validGenomicProfile(downloadDataParameters)) {
+    alert("Invalid Genomic Profile Selected.");
+    return false;
+  }
 
-    if (!validCaseSet(downloadDataParameters)) {
-        alert("Invalid Patient/Case Set.");
-        return false;
-    }
+  if (!validCaseSet(downloadDataParameters)) {
+    alert("Invalid Patient/Case Set.");
+    return false;
+  }
 
-    if (!validGeneSet(downloadDataParameters)) {
-        alert("Invalid Gene Set.");
-        return false;
-    }
+  if (!validGeneSet(downloadDataParameters)) {
+    alert("Invalid Gene Set.");
+    return false;
+  }
 
-    return true;
+  return true;
 }

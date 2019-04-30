@@ -80,24 +80,15 @@
       "description": " "
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "paths": {
     "/clinical-data-bin-counts/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch clinical data bin counts by study view filter",
         "operationId": "fetchClinicalDataBinCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "dataBinMethod",
@@ -106,10 +97,7 @@
             "required": false,
             "type": "string",
             "default": "DYNAMIC",
-            "enum": [
-              "STATIC",
-              "DYNAMIC"
-            ]
+            "enum": ["STATIC", "DYNAMIC"]
           },
           {
             "in": "body",
@@ -136,17 +124,11 @@
     },
     "/clinical-data-counts/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch clinical data counts by study view filter",
         "operationId": "fetchClinicalDataCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -173,17 +155,11 @@
     },
     "/clinical-data-density-plot/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch clinical data density plot bins by study view filter",
         "operationId": "fetchClinicalDataDensityPlotUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "xAxisAttributeId",
@@ -251,10 +227,7 @@
             "description": "Clinical data type of both attributes",
             "required": true,
             "type": "string",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -281,17 +254,11 @@
     },
     "/cna-genes/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch CNA genes by study view filter",
         "operationId": "fetchCNAGenesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -318,17 +285,11 @@
     },
     "/cosmic-counts/fetch": {
       "post": {
-        "tags": [
-          "Cosmic Counts"
-        ],
+        "tags": ["Cosmic Counts"],
         "summary": "Get counts within the COSMIC database by keywords",
         "operationId": "fetchCosmicCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -358,17 +319,11 @@
     },
     "/filtered-samples/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch sample IDs by study view filter",
         "operationId": "fetchFilteredSamplesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "negateFilters",
@@ -403,17 +358,11 @@
     },
     "/geneset-hierarchy/fetch": {
       "post": {
-        "tags": [
-          "Gene Set Hierarchy"
-        ],
+        "tags": ["Gene Set Hierarchy"],
         "summary": "Get gene set hierarchical organization information. I.e. how different gene sets relate to other gene sets, in a hierarchy",
         "operationId": "fetchGenesetHierarchyInfoUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneticProfileId",
@@ -496,14 +445,10 @@
     },
     "/genesets": {
       "get": {
-        "tags": [
-          "Gene Sets"
-        ],
+        "tags": ["Gene Sets"],
         "summary": "Get all gene sets",
         "operationId": "getAllGenesetsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "projection",
@@ -512,12 +457,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -559,17 +499,11 @@
     },
     "/genesets/fetch": {
       "post": {
-        "tags": [
-          "Gene Sets"
-        ],
+        "tags": ["Gene Sets"],
         "summary": "Fetch gene sets by ID",
         "operationId": "fetchGenesetsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -599,14 +533,10 @@
     },
     "/genesets/{genesetId}": {
       "get": {
-        "tags": [
-          "Gene Sets"
-        ],
+        "tags": ["Gene Sets"],
         "summary": "Get a gene set",
         "operationId": "getGenesetUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "genesetId",
@@ -628,17 +558,11 @@
     },
     "/genesets/{genesetId}/expression-correlation/fetch": {
       "post": {
-        "tags": [
-          "Gene Set Correlation"
-        ],
+        "tags": ["Gene Set Correlation"],
         "summary": "Get the genes in a gene set that have expression correlated to the gene set scores (calculated using Spearman's correlation)",
         "operationId": "fetchCorrelatedGenesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "genesetId",
@@ -702,17 +626,11 @@
     },
     "/genetic-profiles/{geneticProfileId}/geneset-genetic-data/fetch": {
       "post": {
-        "tags": [
-          "Gene Set Scores"
-        ],
+        "tags": ["Gene Set Scores"],
         "summary": "Fetch gene set \"genetic data\" items (gene set scores) by profile Id, gene set ids and sample ids",
         "operationId": "fetchGeneticDataItemsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "geneticProfileId",
@@ -746,14 +664,10 @@
     },
     "/info": {
       "get": {
-        "tags": [
-          "Info"
-        ],
+        "tags": ["Info"],
         "summary": "Get information about the running instance",
         "operationId": "getInfoUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -766,17 +680,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/co-expressions/fetch": {
       "post": {
-        "tags": [
-          "Co-Expressions"
-        ],
+        "tags": ["Co-Expressions"],
         "summary": "Fetch co-expressions in a molecular profile",
         "operationId": "fetchCoExpressionsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -827,17 +735,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/copy-number-enrichments/fetch": {
       "post": {
-        "tags": [
-          "Copy Number Enrichments"
-        ],
+        "tags": ["Copy Number Enrichments"],
         "summary": "Fetch copy number enrichments in a molecular profile",
         "operationId": "fetchCopyNumberEnrichmentsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -853,10 +755,7 @@
             "required": false,
             "type": "string",
             "default": "HOMDEL",
-            "enum": [
-              "HOMDEL",
-              "AMP"
-            ]
+            "enum": ["HOMDEL", "AMP"]
           },
           {
             "name": "enrichmentType",
@@ -865,10 +764,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -895,17 +791,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/expression-enrichments/fetch": {
       "post": {
-        "tags": [
-          "Expression Enrichments"
-        ],
+        "tags": ["Expression Enrichments"],
         "summary": "Fetch expression enrichments in a molecular profile",
         "operationId": "fetchExpressionEnrichmentsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -921,10 +811,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -951,17 +838,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/mrna-percentile/fetch": {
       "post": {
-        "tags": [
-          "mRNA Percentile"
-        ],
+        "tags": ["mRNA Percentile"],
         "summary": "Get mRNA expression percentiles for list of genes for a sample",
         "operationId": "fetchMrnaPercentileUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1006,17 +887,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/mutation-enrichments/fetch": {
       "post": {
-        "tags": [
-          "Mutation Enrichments"
-        ],
+        "tags": ["Mutation Enrichments"],
         "summary": "Fetch mutation enrichments in a molecular profile",
         "operationId": "fetchMutationEnrichmentsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1032,10 +907,7 @@
             "required": false,
             "type": "string",
             "default": "SAMPLE",
-            "enum": [
-              "SAMPLE",
-              "PATIENT"
-            ]
+            "enum": ["SAMPLE", "PATIENT"]
           },
           {
             "in": "body",
@@ -1062,17 +934,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/mutation-spectrums/fetch": {
       "post": {
-        "tags": [
-          "Mutation Spectrums"
-        ],
+        "tags": ["Mutation Spectrums"],
         "summary": "Fetch mutation spectrums in a molecular profile",
         "operationId": "fetchMutationSpectrumsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1106,17 +972,11 @@
     },
     "/molecular-profiles/{molecularProfileId}/variant-counts/fetch": {
       "post": {
-        "tags": [
-          "Variant Counts"
-        ],
+        "tags": ["Variant Counts"],
         "summary": "Get counts of specific variants within a mutation molecular profile",
         "operationId": "fetchVariantCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "molecularProfileId",
@@ -1153,17 +1013,11 @@
     },
     "/mutated-genes/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch mutated genes by study view filter",
         "operationId": "fetchMutatedGenesUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1190,17 +1044,11 @@
     },
     "/sample-counts/fetch": {
       "post": {
-        "tags": [
-          "Study View"
-        ],
+        "tags": ["Study View"],
         "summary": "Fetch sample counts by study view filter",
         "operationId": "fetchMolecularProfileSampleCountsUsingPOST",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1224,14 +1072,10 @@
     },
     "/studies/{studyId}/significant-copy-number-regions": {
       "get": {
-        "tags": [
-          "Significant Copy Number Regions"
-        ],
+        "tags": ["Significant Copy Number Regions"],
         "summary": "Get significant copy number alteration regions in a study",
         "operationId": "getSignificantCopyNumberRegionsUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -1247,12 +1091,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1300,10 +1139,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1321,14 +1157,10 @@
     },
     "/studies/{studyId}/significantly-mutated-genes": {
       "get": {
-        "tags": [
-          "Significantly Mutated Genes"
-        ],
+        "tags": ["Significantly Mutated Genes"],
         "summary": "Get significantly mutated genes in a study",
         "operationId": "getSignificantlyMutatedGenesUsingGET",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "studyId",
@@ -1344,12 +1176,7 @@
             "required": false,
             "type": "string",
             "default": "SUMMARY",
-            "enum": [
-              "ID",
-              "SUMMARY",
-              "DETAILED",
-              "META"
-            ]
+            "enum": ["ID", "SUMMARY", "DETAILED", "META"]
           },
           {
             "name": "pageSize",
@@ -1397,10 +1224,7 @@
             "required": false,
             "type": "string",
             "default": "ASC",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
+            "enum": ["ASC", "DESC"]
           }
         ],
         "responses": {
@@ -1479,10 +1303,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         },
         "customBins": {
           "type": "array",
@@ -1541,10 +1362,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         },
         "counts": {
           "type": "array",
@@ -1563,10 +1381,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         },
         "values": {
           "type": "array",
@@ -1585,10 +1400,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         }
       },
       "title": "ClinicalDataFilter"
@@ -1601,10 +1413,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         },
         "values": {
           "type": "array",
@@ -1738,11 +1547,7 @@
     },
     "CosmicMutation": {
       "type": "object",
-      "required": [
-        "cosmicMutationId",
-        "count",
-        "proteinChange"
-      ],
+      "required": ["cosmicMutationId", "count", "proteinChange"],
       "properties": {
         "cosmicMutationId": {
           "type": "string"
@@ -1768,10 +1573,7 @@
         },
         "clinicalDataType": {
           "type": "string",
-          "enum": [
-            "SAMPLE",
-            "PATIENT"
-          ]
+          "enum": ["SAMPLE", "PATIENT"]
         },
         "count": {
           "type": "integer",
@@ -1821,10 +1623,7 @@
     },
     "EnrichmentFilter": {
       "type": "object",
-      "required": [
-        "alteredIds",
-        "unalteredIds"
-      ],
+      "required": ["alteredIds", "unalteredIds"],
       "properties": {
         "alteredIds": {
           "type": "array",
@@ -2061,10 +1860,7 @@
     },
     "GisticToGene": {
       "type": "object",
-      "required": [
-        "entrezGeneId",
-        "hugoGeneSymbol"
-      ],
+      "required": ["entrezGeneId", "hugoGeneSymbol"],
       "properties": {
         "entrezGeneId": {
           "type": "integer",
@@ -2375,11 +2171,7 @@
     },
     "Sample": {
       "type": "object",
-      "required": [
-        "patientId",
-        "sampleId",
-        "studyId"
-      ],
+      "required": ["patientId", "sampleId", "studyId"],
       "properties": {
         "copyNumberSegmentPresent": {
           "type": "boolean"

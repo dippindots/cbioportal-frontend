@@ -17,18 +17,25 @@
 */
 
 jQuery.fn.mailme = function(replace) {
-    var at = / at /;
-    var dot = / dot /g;
-    replace = replace ? true : false;
-    this.each( function() {
-        var addr = jQuery(this).text().replace(at,"@").replace(dot,".");
-        var title = jQuery(this).attr('title')
-        if(replace) {
-            $(this).html('<a href="mailto:'+addr+'" title="'+title+'">'+ addr +'</a>');
-        }else{
-            $(this)
-                .after('<a href="mailto:'+addr+'" title="'+title+'">'+ addr +'</a>')
-                .remove();
-        }
-    });
+  var at = / at /;
+  var dot = / dot /g;
+  replace = replace ? true : false;
+  this.each(function() {
+    var addr = jQuery(this)
+      .text()
+      .replace(at, "@")
+      .replace(dot, ".");
+    var title = jQuery(this).attr("title");
+    if (replace) {
+      $(this).html(
+        '<a href="mailto:' + addr + '" title="' + title + '">' + addr + "</a>"
+      );
+    } else {
+      $(this)
+        .after(
+          '<a href="mailto:' + addr + '" title="' + title + '">' + addr + "</a>"
+        )
+        .remove();
+    }
+  });
 };

@@ -29,79 +29,72 @@
  ** Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  **/
 
-function uploadUrlByGetToGS(dataURL, filename)
-{
-    var dest = "";
-    var onComplete = function(savePath){
-        alert('outer Saved to GenomeSpace as ' + savePath);
-    };
-    var onError = function(savePath){
-        alert('outer ERROR saving to GenomeSpace as ' + savePath);
-    };
-    gsUploadByGet({
-        url: dataURL,
-        filename: filename,
-        successCallback: onComplete,
-        errorCallback: onError
+function uploadUrlByGetToGS(dataURL, filename) {
+  var dest = "";
+  var onComplete = function(savePath) {
+    alert("outer Saved to GenomeSpace as " + savePath);
+  };
+  var onError = function(savePath) {
+    alert("outer ERROR saving to GenomeSpace as " + savePath);
+  };
+  gsUploadByGet({
+    url: dataURL,
+    filename: filename,
+    successCallback: onComplete,
+    errorCallback: onError
+  });
+  return false;
+}
+
+function getDataFilenameSuffixByProfile(genomicProfile) {
+  if (genomicProfile == "PROFILE_COPY_NUMBER_ALTERATION") {
+    return "cna.txt";
+  } else if (genomicProfile == "PROFILE_MUTATION_EXTENDED") {
+    return "mutations.txt";
+  } else if (genomicProfile == "PROFILE_MRNA_EXPRESSION") {
+    return "mrna.txt";
+  } else if (genomicProfile == "PROFILE_METHYLATION") {
+    return "methylation.txt";
+  } else if (genomicProfile == "PROFILE_PROTEIN_EXPRESSION") {
+    return "rppa.txt";
+  }
+}
+
+function getDataFilename(cancerStudy, genomicProfiles) {
+  var dataFilename = "cbioportal-" + cancerStudy + "-";
+  $(genomicProfiles)
+    .find("input:radio")
+    .each(function() {
+      if ($(this).attr("checked")) {
+        dataFilename =
+          dataFilename + getDataFilenameSuffixByProfile($(this).attr("class"));
+      }
     });
-    return false;
-};
-
-function getDataFilenameSuffixByProfile(genomicProfile)
-{
-    if (genomicProfile == 'PROFILE_COPY_NUMBER_ALTERATION') {
-        return 'cna.txt';
-    }
-    else if (genomicProfile == 'PROFILE_MUTATION_EXTENDED') {
-        return 'mutations.txt';
-    }
-    else if (genomicProfile == 'PROFILE_MRNA_EXPRESSION') {
-        return 'mrna.txt';
-    }
-    else if (genomicProfile == 'PROFILE_METHYLATION') {
-        return 'methylation.txt';
-    }
-    else if (genomicProfile == 'PROFILE_PROTEIN_EXPRESSION') {
-        return 'rppa.txt';
-    }
+  return dataFilename;
 }
 
-function getDataFilename(cancerStudy, genomicProfiles)
-{
-    var dataFilename = "cbioportal-" + cancerStudy + "-";
-    $(genomicProfiles).find('input:radio').each(function() {
-        if ($(this).attr('checked')) {
-            dataFilename = dataFilename + getDataFilenameSuffixByProfile($(this).attr('class'));
-        }
-    });
-    return dataFilename;
+function getOrigin() {
+  var location = new String(window.location);
+  return location.substring(0, location.indexOf("?") + 1);
 }
 
-function getOrigin()
-{
-    var location = new String(window.location);
-    return location.substring(0, location.indexOf("?")+1);
+function getFormParametersString(downloadDataParameters) {
+  var parameters = "";
+  jQuery.each(downloadDataParameters, function(i, parameter) {
+    parameters +=
+      parameter.name + "=" + encodeURIComponent(parameter.value) + "&";
+  });
+  parameters += "Action=Submit";
+
+  return parameters;
 }
 
-function getFormParametersString(downloadDataParameters)
-{
-    var parameters = "";
-    jQuery.each(downloadDataParameters, function(i, parameter) {
-        parameters += parameter.name + "=" + encodeURIComponent(parameter.value) + "&";
-    });
-    parameters += "Action=Submit";
-
-    return parameters;
-}
-
-
-
-function prepGSLaunch(form, cancerStudy, genomicProfiles)
-{
-    var downloadDataParameters = $(form).serializeArray();
-    if (validDownloadDataForm(downloadDataParameters)) {
-        var urlToDownloadData = getOrigin() + getFormParametersString(downloadDataParameters);
-        var dataFilename = getDataFilename(cancerStudy, genomicProfiles)
-        uploadUrlByGetToGS(urlToDownloadData, dataFilename);
-    }
+function prepGSLaunch(form, cancerStudy, genomicProfiles) {
+  var downloadDataParameters = $(form).serializeArray();
+  if (validDownloadDataForm(downloadDataParameters)) {
+    var urlToDownloadData =
+      getOrigin() + getFormParametersString(downloadDataParameters);
+    var dataFilename = getDataFilename(cancerStudy, genomicProfiles);
+    uploadUrlByGetToGS(urlToDownloadData, dataFilename);
+  }
 }
