@@ -22,6 +22,7 @@ export class AppStore {
       if (/Error: 400|Error: 500/.test(error)) {
         sendSentryMessage("ERROR DIALOG SHOWN:" + error);
         this.siteErrors.push({ message: error });
+        console.log("add some conflict");
       }
     });
   }
@@ -29,6 +30,8 @@ export class AppStore {
   @observable siteErrors: SiteError[] = [];
 
   @observable userName: string | undefined;
+
+  @observable conflictValue: string | undefined;
 
   @observable authMethod: string | undefined;
 
