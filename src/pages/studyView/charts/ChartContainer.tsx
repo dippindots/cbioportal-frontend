@@ -332,55 +332,6 @@ export class ChartContainer extends React.Component<IChartContainerProps, {}> {
                     />
                 );
             }
-            case ChartTypeEnum.SURVIVAL: {
-                if (this.survivalChartData) {
-                    const data = this.survivalChartData;
-                    return ()=>(
-                        <SurvivalChart ref={this.handlers.ref}
-                                       patientSurvivals={data.patientSurvivals}
-                                       patientToAnalysisGroups={data.patientToAnalysisGroups}
-                                       analysisGroups={data.analysisGroups}
-                                       naPatientsHiddenInSurvival={this.naPatientsHiddenInSurvival}
-                                       showNaPatientsHiddenToggle={this.props.patientKeysWithNAInSelectedClinicalData!.result!.length > 0}
-                                       toggleSurvivalHideNAPatients={this.toggleSurvivalHideNAPatients}
-                                       legendLocation={LegendLocation.TOOLTIP}
-                                       title={this.props.title}
-                                       xAxisLabel="Months Survival"
-                                       yAxisLabel="Surviving"
-                                       totalCasesHeader="Number of Cases, Total"
-                                       statusCasesHeader="Number of Cases, Deceased"
-                                       medianMonthsHeader="Median Months Survival"
-                                       yLabelTooltip="Survival estimate"
-                                       xLabelWithEventTooltip="Time of death"
-                                       xLabelWithoutEventTooltip="Time of last observation"
-                                       showDownloadButtons={false}
-                                       disableZoom={true}
-                                       showTable={false}
-                                       styleOpts={{
-                                           width: getWidthByDimension(this.props.chartMeta.dimension, this.borderWidth),
-                                           height: getHeightByDimension(this.props.chartMeta.dimension, this.chartHeaderHeight),
-                                           tooltipXOffset:10,
-                                           tooltipYOffset:-58,
-                                           pValue: {
-                                               x:getWidthByDimension(this.props.chartMeta.dimension, this.borderWidth)-10,
-                                               y:30,
-                                               textAnchor:"end"
-                                           },
-                                           axis: {
-                                               y: {
-                                                   axisLabel: {
-                                                       padding: 40
-                                                   }
-                                               }
-                                           }
-                                       }}
-                                       fileName="Overall_Survival"
-                        />
-                    );
-                } else {
-                    return null;
-                }
-            }
             case ChartTypeEnum.SCATTER: {
                 return ()=>(
                     <div style={{overflow:"hidden", height:getHeightByDimension(this.props.chartMeta.dimension, this.chartHeaderHeight)}}>

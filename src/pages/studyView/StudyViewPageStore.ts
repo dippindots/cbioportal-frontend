@@ -1257,8 +1257,6 @@ export class StudyViewPageStore {
                         this.resetMutationCountVsCNAFilter();
                     }
                     break;
-                case ChartTypeEnum.SURVIVAL:
-                    break;
                 default:
                     if(chartMeta.uniqueKey === UniqueKey.WITH_MUTATION_DATA) {
                         this._withMutationDataFilter = undefined;
@@ -2055,20 +2053,6 @@ export class StudyViewPageStore {
         return (this.filteredPhysicalStudies.result.length + this.filteredVirtualStudies.result.length) === 1 && this.filteredVirtualStudies.result.length > 0 && !this.chartsAreFiltered;
     }
 
-    @computed get analysisGroupsPossible() {
-        // analysis groups possible iff there are visible analysis groups-capable charts
-        const analysisGroupsCharts =
-            [UniqueKey.DISEASE_FREE_SURVIVAL, UniqueKey.OVERALL_SURVIVAL] as string[];
-        let ret = false;
-        for (const chartMeta of this.visibleAttributes) {
-            if (analysisGroupsCharts.includes(chartMeta.uniqueKey)) {
-                ret = true;
-                break;
-            }
-        }
-        return ret;
-    }
-
     @autobind
     isChartNameValid(chartName: string) {
         const match = _.find(this.chartMetaSet, chartMeta => chartMeta.displayName.toUpperCase() === chartName.toUpperCase());
@@ -2167,22 +2151,6 @@ export class StudyViewPageStore {
                 };
             }
             return acc
-        }, _chartMetaSet);
-
-
-        _.reduce(this.survivalPlots, (acc: { [id: string]: ChartMeta }, survivalPlot) => {
-            acc[survivalPlot.id] = {
-                uniqueKey: survivalPlot.id,
-                chartType: this.chartsType.get(survivalPlot.id)!,
-                dataType: getChartMetaDataType(survivalPlot.id),
-                patientAttribute:true,
-                dimension: this.chartsDimension[survivalPlot.id]!,
-                displayName: survivalPlot.title,
-                priority: getDefaultPriorityByUniqueKey(survivalPlot.id),
-                renderWhenDataChange: false,
-                description: ''
-            };
-            return acc;
         }, _chartMetaSet);
 
         if (!_.isEmpty(this.mutationProfiles.result!)) {
@@ -2337,23 +2305,6 @@ export class StudyViewPageStore {
         });
 
         const cancerTypeIds = _.uniq(this.queriedPhysicalStudies.result.map(study => study.cancerTypeId));
-
-        this.chartsType.set(UniqueKey.OVERALL_SURVIVAL, ChartTypeEnum.SURVIVAL);
-        this.chartsDimension[UniqueKey.OVERALL_SURVIVAL] = STUDY_VIEW_CONFIG.layout.dimensions[ChartTypeEnum.SURVIVAL];
-        if (osStatusFlag && osMonthsFlag && getDefaultPriorityByUniqueKey(UniqueKey.OVERALL_SURVIVAL) !== 0) {
-            // hide OVERALL_SURVIVAL chart if cacner type is mixed or have moer than one cancer type
-            if (cancerTypeIds.length === 1 && cancerTypeIds[0] !== 'mixed') {
-                this.changeChartVisibility(UniqueKey.OVERALL_SURVIVAL, true);
-            }
-        }
-        this.chartsType.set(UniqueKey.DISEASE_FREE_SURVIVAL, ChartTypeEnum.SURVIVAL);
-        this.chartsDimension[UniqueKey.DISEASE_FREE_SURVIVAL] = STUDY_VIEW_CONFIG.layout.dimensions[ChartTypeEnum.SURVIVAL];
-        if (dfsStatusFlag && dfsMonthsFlag && getDefaultPriorityByUniqueKey(UniqueKey.DISEASE_FREE_SURVIVAL) !== 0) {
-            // hide DISEASE_FREE_SURVIVAL chart if cacner type is mixed or have moer than one cancer type
-            if (cancerTypeIds.length === 1 && cancerTypeIds[0] !== 'mixed') {
-                this.changeChartVisibility(UniqueKey.DISEASE_FREE_SURVIVAL, true);
-            }
-        }
 
         this.chartsType.set(UniqueKey.MUTATION_COUNT_CNA_FRACTION, ChartTypeEnum.SCATTER);
         this.chartsDimension[UniqueKey.MUTATION_COUNT_CNA_FRACTION] = STUDY_VIEW_CONFIG.layout.dimensions[ChartTypeEnum.SCATTER];
@@ -2731,50 +2682,6 @@ export class StudyViewPageStore {
         invoke: () => fetchCopyNumberSegmentsForSamples(this.selectedSamples.result)
     }, []);
 
-    @computed private get survivalPlots() {
-        let osStatusFlag = false;
-        let osMonthsFlag = false;
-        let dfsStatusFlag = false;
-        let dfsMonthsFlag = false;
-        let survivalTypes: SurvivalType[] = [];
-
-        this.clinicalAttributes.result.forEach(obj => {
-            if (obj.clinicalAttributeId === OS_STATUS) {
-                osStatusFlag = true;
-            } else if (obj.clinicalAttributeId === OS_MONTHS) {
-                osMonthsFlag = true;
-            } else if (obj.clinicalAttributeId === DFS_STATUS) {
-                dfsStatusFlag = true;
-            } else if (obj.clinicalAttributeId === DFS_MONTHS) {
-                dfsMonthsFlag = true;
-            }
-        });
-
-        if (osStatusFlag && osMonthsFlag) {
-            survivalTypes.push({
-                id: UniqueKey.OVERALL_SURVIVAL,
-                title: 'Overall Survival',
-                associatedAttrs: [OS_STATUS, OS_MONTHS],
-                filter: ['DECEASED'],
-                alteredGroup: [],
-                unalteredGroup: []
-            });
-
-        }
-        if (dfsStatusFlag && dfsMonthsFlag) {
-            survivalTypes.push({
-                id: UniqueKey.DISEASE_FREE_SURVIVAL,
-                title: 'Disease Free Survival',
-                associatedAttrs: [DFS_STATUS, DFS_MONTHS],
-                filter: ['Recurred/Progressed', 'Recurred'],
-                alteredGroup: [],
-                unalteredGroup: []
-            });
-        }
-
-        return survivalTypes;
-    }
-
     public async getClinicalData(chartMeta: ChartMeta) {
         if (chartMeta.clinicalAttribute && this.samples.result) {
             const clinicalDataList = await defaultClient.fetchClinicalDataUsingPOST({
@@ -2869,54 +2776,6 @@ export class StudyViewPageStore {
         });
     }
 
-    public async getSurvivalDownloadData(chartMeta: ChartMeta)
-    {
-        if (this.survivalData.result)
-        {
-            const data: string[] = [];
-
-            // find the unique clinical attribute ids
-            const uniqueClinicalAttributeIds: {[clinicalAttributeId: string]: string} = _.reduce(
-                this.survivalData.result,
-                (map: {[clinicalAttributeId: string]: string}, clinicalDataList: ClinicalData[]) => {
-                    clinicalDataList.forEach(clinicalData => {
-                        if (clinicalData.clinicalAttributeId) {
-                            map[clinicalData.clinicalAttributeId] = clinicalData.clinicalAttributeId;
-                        }
-                    });
-
-                    return map;
-                },
-                {}
-            );
-
-            // add the header row
-            data.push(["Study ID", "Patient ID", ..._.values(uniqueClinicalAttributeIds)].join("\t"));
-
-            // add the data rows
-            _.each(this.survivalData.result, clinicalDataList => {
-                const row: string[] = [];
-
-                if (clinicalDataList.length > 0) {
-                    row.push(clinicalDataList[0].studyId || NA_DATA);
-                    row.push(clinicalDataList[0].patientId || NA_DATA);
-                    const keyed = _.keyBy(clinicalDataList, 'clinicalAttributeId');
-
-                    _.each(uniqueClinicalAttributeIds, id => {
-                        row.push(keyed[id] ? keyed[id].value || NA_DATA : NA_DATA);
-                    });
-                }
-
-                data.push(row.join("\t"));
-            });
-
-            return data.join("\n");
-        }
-        else {
-            return "";
-        }
-    }
-
     public async getMutatedGenesDownloadData() {
         if (this.mutatedGeneData.result) {
             let data = [['Gene', 'MutSig(Q-value)', '# Mut', '#', 'Freq'].join('\t')];
@@ -2947,52 +2806,6 @@ export class StudyViewPageStore {
         } else
             return '';
     }
-
-    readonly survivalPlotData = remoteData<SurvivalType[]>({
-        await: () => [this.survivalData, this.selectedPatientKeys, this.unSelectedPatientKeys],
-        invoke: async () => {
-
-            return this.survivalPlots.map(obj => {
-                obj.alteredGroup = getPatientSurvivals(
-                    this.survivalData.result,
-                    this.selectedPatientKeys.result!, obj.associatedAttrs[0], obj.associatedAttrs[1], s => obj.filter.includes(s));
-                obj.unalteredGroup = getPatientSurvivals(
-                    this.survivalData.result,
-                    this.unSelectedPatientKeys.result!, obj.associatedAttrs[0], obj.associatedAttrs[1], s => obj.filter.includes(s));
-                return obj
-            });
-        },
-        onError: (error => {}),
-        default: []
-    });
-
-    readonly survivalData = remoteData<{ [id: string]: ClinicalData[] }>({
-        await: () => [this.clinicalAttributes, this.samples],
-        invoke: async () => {
-            const attributeIds = _.flatten(this.survivalPlots.map(obj => obj.associatedAttrs))
-            if(!_.isEmpty(attributeIds)){
-                const filter: ClinicalDataMultiStudyFilter = {
-                    attributeIds: attributeIds,
-                    identifiers: _.map(this.samples.result!, obj => {
-                        return {
-                            "entityId": obj.patientId,
-                            "studyId": obj.studyId
-                        }
-                    })
-                };
-
-                let data = await defaultClient.fetchClinicalDataUsingPOST({
-                    clinicalDataType: ClinicalDataTypeEnum.PATIENT,
-                    clinicalDataMultiStudyFilter: filter
-                })
-
-                return _.groupBy(data, 'uniquePatientKey')
-            }
-            return {}
-        },
-        onError: (error => {}),
-        default: {}
-    });
 
     readonly mutationCountVsCNADensityData = remoteData<{bins:DensityPlotBin[], xBinSize:number, yBinSize:number}>({
         await:()=>[this.clinicalAttributes],
@@ -3162,7 +2975,6 @@ export class StudyViewPageStore {
     readonly clinicalDataWithCount = remoteData<ClinicalDataCountSet>({
         await: () => [
             this.molecularProfileSampleCounts,
-            this.survivalPlotData,
             this.clinicalAttributeIdToClinicalAttribute,
             this.clinicalAttributesCounts,
             this.cancerStudiesData,
@@ -3181,12 +2993,6 @@ export class StudyViewPageStore {
                         }
                         return map;
                     }, {});
-
-                _.each(this.survivalPlotData.result, (survivalPlot) => {
-                    if (survivalPlot.id in this.chartMetaSet) {
-                        ret[survivalPlot.id] = survivalPlot.alteredGroup.length;
-                    }
-                });
 
                 if (UniqueKey.CANCER_STUDIES in this.chartMetaSet) {
                     ret[UniqueKey.CANCER_STUDIES] = _.sumBy(this.cancerStudiesData.result, data => data.count);

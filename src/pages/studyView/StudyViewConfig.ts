@@ -76,7 +76,6 @@ export type StudyViewConfig = StudyView & StudyViewFrontEndConfig
 export enum ChartTypeEnum {
     PIE_CHART = 'PIE_CHART',
     BAR_CHART = 'BAR_CHART',
-    SURVIVAL = 'SURVIVAL',
     TABLE = 'TABLE',
     SCATTER = 'SCATTER',
     MUTATED_GENES_TABLE = 'MUTATED_GENES_TABLE',
@@ -87,7 +86,6 @@ export enum ChartTypeEnum {
 export enum ChartTypeNameEnum {
     PIE_CHART = 'pie chart',
     BAR_CHART = 'bar chart',
-    SURVIVAL = 'survival plot',
     TABLE = 'table',
     SCATTER = 'density plot',
     MUTATED_GENES_TABLE = 'table',
@@ -115,8 +113,6 @@ const studyViewFrontEnd = {
         "PATIENT_CANCER_TYPE": 3000,
         "SAMPLE_CANCER_TYPE_DETAILED": 2000,
         "PATIENT_CANCER_TYPE_DETAILED": 2000,
-        "OS_SURVIVAL": 400,
-        "DFS_SURVIVAL": 300,
         "MUTATION_COUNT_CNA_FRACTION": 200,
         "MUTATED_GENES_TABLE": 90,
         "CNA_GENES_TABLE": 80,
@@ -181,10 +177,6 @@ const studyViewFrontEnd = {
                 h: 2
             },
             [ChartTypeEnum.TABLE]: {
-                w: 2,
-                h: 2
-            },
-            [ChartTypeEnum.SURVIVAL]: {
                 w: 2,
                 h: 2
             },
