@@ -290,6 +290,8 @@ export const DataTypeConstants = {
     LOGVALUE: 'LOG-VALUE',
     LOG2VALUE: 'LOG2-VALUE',
     LIMITVALUE: 'LIMIT-VALUE',
+    CATEGORICAL: 'CATEGORICAL',
+    BINARY: 'BINARY',
     FUSION: 'FUSION',
     SV: 'SV',
 };

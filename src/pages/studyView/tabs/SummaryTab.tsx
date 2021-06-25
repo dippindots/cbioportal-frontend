@@ -112,7 +112,7 @@ export class StudySummaryTab extends React.Component<
                 chartMeta: ChartMeta,
                 dataBins: GenericAssayDataBin[]
             ) => {
-                this.store.updateGenericAssayDataIntervalFilters(
+                this.store.updateGenericAssayDataFilters(
                     chartMeta.uniqueKey,
                     dataBins
                 );
@@ -137,6 +137,8 @@ export class StudySummaryTab extends React.Component<
                 .setComparisonConfirmationModal,
         };
 
+        // console.log(chartMeta);
+
         switch (this.store.chartsType.get(chartMeta.uniqueKey)) {
             case ChartTypeEnum.PIE_CHART: {
                 //if the chart is one of the custom charts then get the appropriate promise
@@ -152,6 +154,15 @@ export class StudySummaryTab extends React.Component<
                     props.onValueSelection = this.handlers.setCustomChartFilters;
                     props.onResetSelection = this.handlers.setCustomChartFilters;
                     props.promise = this.store.getCustomDataCount(chartMeta);
+                } else if (
+                    this.store.isGenericAssayChart(chartMeta.uniqueKey)
+                ) {
+                    props.filters = [];
+                    props.onValueSelection = this.handlers.setCustomChartFilters;
+                    props.onResetSelection = this.handlers.setCustomChartFilters;
+                    props.promise = this.store.getGenericAssayChartDataCount(
+                        chartMeta
+                    );
                 } else {
                     props.promise = this.store.getClinicalDataCount(chartMeta);
                     props.filters = this.store
@@ -163,6 +174,7 @@ export class StudySummaryTab extends React.Component<
                     props.onValueSelection = this.handlers.onValueSelection;
                     props.onResetSelection = this.handlers.onValueSelection;
                 }
+                // TODO: (GA) Add other datatype by using another function
                 props.onChangeChartType = this.handlers.onChangeChartType;
                 props.getData = (dataType?: DataType) =>
                     this.store.getPieChartDataDownload(chartMeta, dataType);
@@ -193,7 +205,7 @@ export class StudySummaryTab extends React.Component<
                     props.promise = this.store.getGenericAssayChartDataBin(
                         chartMeta
                     );
-                    props.filters = this.store.getGenericAssayDataIntervalFiltersByUniqueKey(
+                    props.filters = this.store.getGenericAssayDataFiltersByUniqueKey(
                         props.chartMeta!.uniqueKey
                     );
                     props.onDataBinSelection = this.handlers.onGenericAssayDataBinSelection;

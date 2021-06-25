@@ -62,7 +62,7 @@ export interface IUserSelectionsProps {
         uniqueKey: string,
         values: DataFilterValue[]
     ) => void;
-    updateGenericAssayDataIntervalFilter: (
+    updateGenericAssayDataFilter: (
         uniqueKey: string,
         values: DataFilterValue[]
     ) => void;
@@ -263,7 +263,7 @@ export default class UserSelections extends React.Component<
                                                     .clinicalFilterContent
                                             }
                                             onDelete={() =>
-                                                this.props.updateGenericAssayDataIntervalFilter(
+                                                this.props.updateGenericAssayDataFilter(
                                                     chartMeta.uniqueKey,
                                                     []
                                                 )

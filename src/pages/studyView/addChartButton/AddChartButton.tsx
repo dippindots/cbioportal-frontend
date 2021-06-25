@@ -300,6 +300,17 @@ class AddChartTabs extends React.Component<IAddChartTabsProps, {}> {
             )
         ) {
             this.props.store.addGenericAssayContinuousCharts(charts);
+        } else if (
+            _.every(
+                charts,
+                chart =>
+                    chart.dataType === DataTypeConstants.BINARY ||
+                    chart.dataType === DataTypeConstants.CATEGORICAL
+            )
+        ) {
+            this.props.store.addGenericAssayBinaryOrCategoricalCharts(charts);
+        } else {
+            // Do nothing, fail silently
         }
     }
 
