@@ -1,9 +1,10 @@
 var {
     goToUrlAndSetLocalStorage,
-    assertScreenShotMatch,
     waitForOncoprint,
     checkOncoprintElement,
 } = require('../../../shared/specUtils');
+var assertScreenShotMatch = require('../../../shared/lib/testUtils')
+    .assertScreenShotMatch;
 
 const CBIOPORTAL_URL = process.env.CBIOPORTAL_URL.replace(/\/$/, '');
 
