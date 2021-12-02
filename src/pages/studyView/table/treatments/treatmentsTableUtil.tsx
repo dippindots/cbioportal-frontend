@@ -73,22 +73,6 @@ export enum TreatmentTableType {
     PATIENT = 'PATIENT_TREATMENTS',
 }
 
-export const TreatmentGenericColumnHeader = class GenericColumnHeader extends React.Component<
-    { margin: number; headerName: string },
-    {}
-> {
-    render() {
-        return (
-            <div
-                style={{ marginLeft: this.props.margin }}
-                className={styles.displayFlex}
-            >
-                {this.props.headerName}
-            </div>
-        );
-    }
-};
-
 export const TreatmentColumnCell = class TreatmentColumnCell extends React.Component<
     { row: PatientTreatmentRow | SampleTreatmentRow },
     {}

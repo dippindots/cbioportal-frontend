@@ -2,26 +2,20 @@ import * as React from 'react';
 import _ from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 import autobind from 'autobind-decorator';
-import {
-    PatientTreatmentRow,
-    SampleTreatmentRow,
-} from 'cbioportal-ts-api-client';
 import { SelectionOperatorEnum } from 'pages/studyView/TableUtils';
-import styles from 'pages/studyView/table/tables.module.scss';
-import { treatmentUniqueKey, TreatmentTableType } from './treatmentsTableUtil';
 import { stringListToSet } from 'cbioportal-frontend-commons';
 import { SortDirection } from 'shared/components/lazyMobXTable/LazyMobXTable';
 
-type TreatmentsTableProps = {
+type BaseMultiSelectionTableProps = {
     filters: string[][];
-    tableType: TreatmentTableType;
+    tableType: string;
     onSubmitSelection: (value: string[][]) => void;
     onChangeSelectedRows: (rowsKeys: string[]) => void;
     selectedRowsKeys: string[];
 };
 
-export abstract class TreatmentsTable<
-    P extends TreatmentsTableProps
+export abstract class AbstractMultiSelectionTable<
+    P extends BaseMultiSelectionTableProps
 > extends React.Component<P, {}> {
     @observable protected _selectionType: SelectionOperatorEnum;
     @observable protected sortDirection: SortDirection;
@@ -149,23 +143,5 @@ export abstract class TreatmentsTable<
             this._selectionType = SelectionOperatorEnum.INTERSECTION;
         }
         localStorage.setItem(this.props.tableType, this.selectionType);
-    }
-
-    @autobind
-    isSelectedRow(data: PatientTreatmentRow | SampleTreatmentRow) {
-        return this.isChecked(treatmentUniqueKey(data));
-    }
-
-    @autobind
-    selectedRowClassName(data: PatientTreatmentRow | SampleTreatmentRow) {
-        const index = this.filterKeyToIndexSet[treatmentUniqueKey(data)];
-        if (index === undefined) {
-            return this.props.filters.length % 2 === 0
-                ? styles.highlightedEvenRow
-                : styles.highlightedOddRow;
-        }
-        return index % 2 === 0
-            ? styles.highlightedEvenRow
-            : styles.highlightedOddRow;
     }
 }

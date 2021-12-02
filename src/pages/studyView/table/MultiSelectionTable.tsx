@@ -25,7 +25,6 @@ import {
     getFreqColumnRender,
     getTooltip,
     FreqColumnTypeEnum,
-    SelectionOperatorEnum,
 } from 'pages/studyView/TableUtils';
 import { GeneCell } from 'pages/studyView/table/GeneCell';
 import LabeledCheckbox from 'shared/components/labeledCheckbox/LabeledCheckbox';
@@ -33,11 +32,11 @@ import styles from 'pages/studyView/table/tables.module.scss';
 import MobxPromise from 'mobxpromise';
 import {
     stringListToIndexSet,
-    stringListToSet,
     EllipsisTextTooltip,
 } from 'cbioportal-frontend-commons';
 import ifNotDefined from 'shared/lib/ifNotDefined';
 import { TableHeaderCellFilterIcon } from 'pages/studyView/table/TableHeaderCellFilterIcon';
+import { AbstractMultiSelectionTable } from './AbstractMultiSelectionTable';
 
 export type MultiSelectionTableRow = OncokbCancerGene & {
     label: string;
@@ -112,26 +111,17 @@ class MultiSelectionTableComponent extends FixedHeaderTable<
 > {}
 
 @observer
-export class MultiSelectionTable extends React.Component<
-    MultiSelectionTableProps,
-    {}
+export class MultiSelectionTable extends AbstractMultiSelectionTable<
+    MultiSelectionTableProps
 > {
     @observable protected sortBy: MultiSelectionTableColumnKey;
-    @observable private sortDirection: SortDirection;
-    @observable private modalSettings: {
-        modalOpen: boolean;
-        modalPanelName: string;
-    } = {
-        modalOpen: false,
-        modalPanelName: '',
-    };
 
     public static defaultProps = {
         cancerGeneFilterEnabled: false,
     };
 
-    constructor(props: MultiSelectionTableProps, context: any) {
-        super(props, context);
+    constructor(props: MultiSelectionTableProps) {
+        super(props);
         makeObservable(this);
         this.sortBy = this.props.defaultSortBy;
     }
@@ -577,10 +567,6 @@ export class MultiSelectionTable extends React.Component<
             : this.props.promise.result || [];
     }
 
-    @computed get flattenedFilters() {
-        return _.flatMap(this.props.filters);
-    }
-
     @computed get selectableTableData() {
         if (this.flattenedFilters.length === 0) {
             return this.tableData;
@@ -625,20 +611,6 @@ export class MultiSelectionTable extends React.Component<
         });
     }
 
-    @action.bound
-    toggleModal(panelName: string) {
-        this.modalSettings.modalOpen = !this.modalSettings.modalOpen;
-        if (!this.modalSettings.modalOpen) {
-            return;
-        }
-        this.modalSettings.modalPanelName = panelName;
-    }
-
-    @action.bound
-    closeModal() {
-        this.modalSettings.modalOpen = !this.modalSettings.modalOpen;
-    }
-
     @autobind
     toggleCancerGeneFilter(event: any) {
         event.stopPropagation();
@@ -649,102 +621,6 @@ export class MultiSelectionTable extends React.Component<
         return (
             !!this.props.cancerGeneFilterEnabled &&
             this.props.filterByCancerGenes
-        );
-    }
-
-    @computed get allSelectedRowsKeysSet() {
-        return stringListToSet([
-            ...this.props.selectedRowsKeys,
-            ...this.preSelectedRowsKeys,
-        ]);
-    }
-
-    @autobind
-    isChecked(uniqueKey: string) {
-        return !!this.allSelectedRowsKeysSet[uniqueKey];
-    }
-
-    @autobind
-    isDisabled(uniqueKey: string) {
-        return _.some(this.preSelectedRowsKeys, key => key === uniqueKey);
-    }
-
-    @action.bound
-    toggleSelectRow(uniqueKey: string) {
-        const record = _.find(
-            this.props.selectedRowsKeys,
-            key => key === uniqueKey
-        );
-        if (_.isUndefined(record)) {
-            this.props.onChangeSelectedRows(
-                this.props.selectedRowsKeys.concat([uniqueKey])
-            );
-        } else {
-            this.props.onChangeSelectedRows(
-                _.xorBy(this.props.selectedRowsKeys, [record])
-            );
-        }
-    }
-    @observable private _selectionType: SelectionOperatorEnum;
-
-    @action.bound
-    afterSelectingRows() {
-        if (this.selectionType === SelectionOperatorEnum.UNION) {
-            this.props.onSubmitSelection([this.props.selectedRowsKeys]);
-        } else {
-            this.props.onSubmitSelection(
-                this.props.selectedRowsKeys.map(selectedRowsKey => [
-                    selectedRowsKey,
-                ])
-            );
-        }
-        this.props.onChangeSelectedRows([]);
-    }
-
-    @computed get selectionType() {
-        if (this._selectionType) {
-            return this._selectionType;
-        }
-        switch (
-            (localStorage.getItem(this.props.tableType) || '').toUpperCase()
-        ) {
-            case SelectionOperatorEnum.INTERSECTION:
-                return SelectionOperatorEnum.INTERSECTION;
-            case SelectionOperatorEnum.UNION:
-                return SelectionOperatorEnum.UNION;
-            default:
-                return this.props.tableType === FreqColumnTypeEnum.DATA
-                    ? SelectionOperatorEnum.INTERSECTION
-                    : SelectionOperatorEnum.UNION;
-        }
-    }
-
-    @action.bound
-    toggleSelectionOperator() {
-        const selectionType = this._selectionType || this.selectionType;
-        if (selectionType === SelectionOperatorEnum.INTERSECTION) {
-            this._selectionType = SelectionOperatorEnum.UNION;
-        } else {
-            this._selectionType = SelectionOperatorEnum.INTERSECTION;
-        }
-        localStorage.setItem(this.props.tableType, this.selectionType);
-    }
-
-    @autobind
-    isSelectedRow(data: MultiSelectionTableRow) {
-        return this.isChecked(data.uniqueKey);
-    }
-
-    @computed get filterKeyToIndexSet() {
-        return _.reduce(
-            this.props.filters,
-            (acc, next, index) => {
-                next.forEach(key => {
-                    acc[key] = index;
-                });
-                return acc;
-            },
-            {} as { [id: string]: number }
         );
     }
 
@@ -759,6 +635,11 @@ export class MultiSelectionTable extends React.Component<
         return index % 2 === 0
             ? styles.highlightedEvenRow
             : styles.highlightedOddRow;
+    }
+
+    @autobind
+    isSelectedRow(data: MultiSelectionTableRow) {
+        return this.isChecked(data.uniqueKey);
     }
 
     @action.bound

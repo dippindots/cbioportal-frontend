@@ -18,13 +18,13 @@ import ifNotDefined from 'shared/lib/ifNotDefined';
 import {
     treatmentUniqueKey,
     TreatmentTableType,
-    TreatmentGenericColumnHeader,
     TreatmentColumnCell,
     filterTreatmentCell,
     toNumericValue,
 } from './treatmentsTableUtil';
-import { TreatmentsTable } from './AbstractTreatmentsTable';
+import { AbstractMultiSelectionTable } from '../AbstractMultiSelectionTable';
 import { MultiSelectionTableRow } from 'pages/studyView/table/MultiSelectionTable';
+import { GenericColumnHeader } from '../tableUtils';
 
 export enum SampleTreatmentsTableColumnKey {
     TREATMENT = 'Treatment',
@@ -67,7 +67,7 @@ class MultiSelectionTableComponent extends FixedHeaderTable<
 > {}
 
 @observer
-export class SampleTreatmentsTable extends TreatmentsTable<
+export class SampleTreatmentsTable extends AbstractMultiSelectionTable<
     SampleTreatmentsTableProps
 > {
     @observable protected sortBy: SampleTreatmentsTableColumnKey;
@@ -123,7 +123,7 @@ export class SampleTreatmentsTable extends TreatmentsTable<
             [SampleTreatmentsTableColumnKey.TREATMENT]: {
                 name: columnKey,
                 headerRender: () => (
-                    <TreatmentGenericColumnHeader
+                    <GenericColumnHeader
                         margin={cellMargin}
                         headerName={columnKey}
                     />
@@ -139,7 +139,7 @@ export class SampleTreatmentsTable extends TreatmentsTable<
             [SampleTreatmentsTableColumnKey.TIME]: {
                 name: columnKey,
                 headerRender: () => (
-                    <TreatmentGenericColumnHeader
+                    <GenericColumnHeader
                         margin={cellMargin}
                         headerName={columnKey}
                     />
@@ -159,7 +159,7 @@ export class SampleTreatmentsTable extends TreatmentsTable<
                 ),
                 name: columnKey,
                 headerRender: () => (
-                    <TreatmentGenericColumnHeader
+                    <GenericColumnHeader
                         margin={cellMargin}
                         headerName={columnKey}
                     />
@@ -270,6 +270,24 @@ export class SampleTreatmentsTable extends TreatmentsTable<
     ) {
         this.sortBy = sortBy;
         this.sortDirection = sortDirection;
+    }
+
+    @autobind
+    isSelectedRow(data: SampleTreatmentRow) {
+        return this.isChecked(treatmentUniqueKey(data));
+    }
+
+    @autobind
+    selectedRowClassName(data: SampleTreatmentRow) {
+        const index = this.filterKeyToIndexSet[treatmentUniqueKey(data)];
+        if (index === undefined) {
+            return this.props.filters.length % 2 === 0
+                ? styles.highlightedEvenRow
+                : styles.highlightedOddRow;
+        }
+        return index % 2 === 0
+            ? styles.highlightedEvenRow
+            : styles.highlightedOddRow;
     }
 
     public render() {

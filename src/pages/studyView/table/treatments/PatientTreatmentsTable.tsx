@@ -13,21 +13,18 @@ import { correctColumnWidth } from 'pages/studyView/StudyViewUtils';
 import LabeledCheckbox from 'shared/components/labeledCheckbox/LabeledCheckbox';
 import styles from 'pages/studyView/table/tables.module.scss';
 import MobxPromise from 'mobxpromise';
-import {
-    stringListToIndexSet,
-    stringListToSet,
-} from 'cbioportal-frontend-commons';
+import { stringListToIndexSet } from 'cbioportal-frontend-commons';
 import ifNotDefined from 'shared/lib/ifNotDefined';
 import {
     treatmentUniqueKey,
     TreatmentTableType,
-    TreatmentGenericColumnHeader,
     TreatmentColumnCell,
     filterTreatmentCell,
     toNumericValue,
 } from './treatmentsTableUtil';
-import { TreatmentsTable } from './AbstractTreatmentsTable';
+import { AbstractMultiSelectionTable } from '../AbstractMultiSelectionTable';
 import { MultiSelectionTableRow } from 'pages/studyView/table/MultiSelectionTable';
+import { GenericColumnHeader } from '../tableUtils';
 
 export enum PatientTreatmentsTableColumnKey {
     TREATMENT = 'Treatment',
@@ -68,7 +65,7 @@ class MultiSelectionTableComponent extends FixedHeaderTable<
 > {}
 
 @observer
-export class PatientTreatmentsTable extends TreatmentsTable<
+export class PatientTreatmentsTable extends AbstractMultiSelectionTable<
     PatientTreatmentsTableProps
 > {
     @observable protected sortBy: PatientTreatmentsTableColumnKey;
@@ -122,7 +119,7 @@ export class PatientTreatmentsTable extends TreatmentsTable<
             [PatientTreatmentsTableColumnKey.TREATMENT]: {
                 name: columnKey,
                 headerRender: () => (
-                    <TreatmentGenericColumnHeader
+                    <GenericColumnHeader
                         margin={cellMargin}
                         headerName={columnKey}
                     />
@@ -139,7 +136,7 @@ export class PatientTreatmentsTable extends TreatmentsTable<
                 tooltip: <span>Number of patients treated</span>,
                 name: columnKey,
                 headerRender: () => (
-                    <TreatmentGenericColumnHeader
+                    <GenericColumnHeader
                         margin={cellMargin}
                         headerName={columnKey}
                     />
@@ -242,6 +239,24 @@ export class PatientTreatmentsTable extends TreatmentsTable<
     ) {
         this.sortBy = sortBy;
         this.sortDirection = sortDirection;
+    }
+
+    @autobind
+    isSelectedRow(data: PatientTreatmentRow) {
+        return this.isChecked(treatmentUniqueKey(data));
+    }
+
+    @autobind
+    selectedRowClassName(data: PatientTreatmentRow) {
+        const index = this.filterKeyToIndexSet[treatmentUniqueKey(data)];
+        if (index === undefined) {
+            return this.props.filters.length % 2 === 0
+                ? styles.highlightedEvenRow
+                : styles.highlightedOddRow;
+        }
+        return index % 2 === 0
+            ? styles.highlightedEvenRow
+            : styles.highlightedOddRow;
     }
 
     public render() {
