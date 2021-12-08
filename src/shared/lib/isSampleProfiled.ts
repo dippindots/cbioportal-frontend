@@ -62,7 +62,7 @@ export function isSampleProfiledInSomeMolecularProfile(
 
 export function isSampleProfiledInMultiple(
     uniqueSampleKey: string,
-    molecularProfileIds: string[],
+    molecularProfileIds: string[] = [],
     coverageInformation: CoverageInformation,
     hugoGeneSymbol?: string
 ): boolean[] {
