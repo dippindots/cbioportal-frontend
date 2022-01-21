@@ -763,6 +763,13 @@ export function getGenericAssayChartUniqueKey(
     return entityId + '_' + profileType;
 }
 
+export function getGenericAssayFrequencyChartUniqueKey(
+    genericAssayType: string,
+    profileType: string
+): string {
+    return genericAssayType + '_' + profileType;
+}
+
 const UNIQUE_KEY_SEPARATOR = ':';
 
 export function getUniqueKeyFromMolecularProfileIds(

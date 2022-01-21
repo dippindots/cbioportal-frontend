@@ -285,6 +285,12 @@ export type DataFilterValue = {
         'value': string
 
 };
+export type EntityFilterValue = {
+    'entityId': string
+
+        'value': string
+
+};
 export type DensityPlotBin = {
     'binX': number
 
@@ -398,6 +404,14 @@ export type GenericAssayDataFilter = {
         'stableId': string
 
         'values': Array < DataFilterValue >
+
+};
+export type GenericAssayFrequencyFilter = {
+    'profileType': string
+
+        'genericAssayType': string
+
+        'values': Array < EntityFilterValue >
 
 };
 export type GenericAssayEnrichment = {
@@ -842,6 +856,8 @@ export type StudyViewFilter = {
         'sampleTreatmentFilters': AndedSampleTreatmentFilters
 
         'sampleTreatmentGroupFilters': AndedSampleTreatmentFilters
+
+        'genericAssayFrequencyFilters': Array < GenericAssayFrequencyFilter >
 
         'studyIds': Array < string >
 

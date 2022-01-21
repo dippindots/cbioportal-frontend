@@ -75,6 +75,7 @@ export enum ChartTypeEnum {
     SAMPLE_TREATMENT_GROUPS_TABLE = 'SAMPLE_TREATMENT_GROUPS_TABLE',
     PATIENT_TREATMENTS_TABLE = 'PATIENT_TREATMENTS_TABLE',
     PATIENT_TREATMENT_GROUPS_TABLE = 'PATIENT_TREATMENT_GROUPS_TABLE',
+    GENERIC_ASSAY_FREQUENCY_TABLE = 'GENERIC_ASSAY_FREQUENCY_TABLE',
     NONE = 'NONE',
 }
 
@@ -93,6 +94,7 @@ export enum ChartTypeNameEnum {
     PATIENT_TREATMENTS_TABLE = 'table',
     SAMPLE_TREATMENT_GROUPS_TABLE = 'table',
     PATIENT_TREATMENT_GROUPS_TABLE = 'table',
+    GENERIC_ASSAY_FREQUENCY_TABLE = 'table',
     NONE = 'none',
 }
 
@@ -223,6 +225,11 @@ const studyViewFrontEnd = {
                 minW: 2,
             },
             [ChartTypeEnum.PATIENT_TREATMENT_GROUPS_TABLE]: {
+                w: 2,
+                h: 2,
+                minW: 2,
+            },
+            [ChartTypeEnum.GENERIC_ASSAY_FREQUENCY_TABLE]: {
                 w: 2,
                 h: 2,
                 minW: 2,

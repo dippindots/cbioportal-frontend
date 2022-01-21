@@ -69,6 +69,8 @@ import {
     SURVIVAL_PLOT_Y_LABEL_TOOLTIP,
 } from 'pages/resultsView/survival/SurvivalUtil';
 import Timer = NodeJS.Timer;
+import { GenericAssayFrequencyTable } from '../table/genericAssayTable/GenericAssayFrequencyTable';
+import { GenericAssayFrequencyTableColumnKey } from '../table/genericAssayTable/GenericAssayFrequencyTableUtils';
 
 export interface AbstractChart {
     toSVGDOMNode: () => Element;
@@ -187,6 +189,8 @@ export class ChartContainer extends React.Component<IChartContainerProps, {}> {
                 this.props.onValueSelection(this.props.chartMeta, values);
             }),
             onChangeSelectedRows: action((values: string[]) => {
+                console.log(values);
+
                 this.selectedRowsKeys = values;
             }),
             onDataBinSelection: action((dataBins: DataBin[]) => {
@@ -1011,6 +1015,50 @@ export class ChartContainer extends React.Component<IChartContainerProps, {}> {
                             />
                         </div>
                     </div>
+                );
+            }
+            case ChartTypeEnum.GENERIC_ASSAY_FREQUENCY_TABLE: {
+                return () => (
+                    <GenericAssayFrequencyTable
+                        tableType={this.props.chartMeta.uniqueKey}
+                        promise={this.props.promise}
+                        width={getWidthByDimension(
+                            this.props.dimension,
+                            this.borderWidth
+                        )}
+                        height={getTableHeightByDimension(
+                            this.props.dimension,
+                            this.chartHeaderHeight
+                        )}
+                        filters={this.props.filters}
+                        onSubmitSelection={this.handlers.onValueSelection}
+                        onChangeSelectedRows={
+                            this.handlers.onChangeSelectedRows
+                        }
+                        extraButtons={
+                            this.comparisonButtonForTables && [
+                                this.comparisonButtonForTables,
+                            ]
+                        }
+                        selectedRowsKeys={this.selectedRowsKeys}
+                        columns={[
+                            {
+                                columnKey:
+                                    GenericAssayFrequencyTableColumnKey.NAME,
+                            },
+                            {
+                                columnKey:
+                                    GenericAssayFrequencyTableColumnKey.NUMBER,
+                            },
+                            {
+                                columnKey:
+                                    GenericAssayFrequencyTableColumnKey.FREQ,
+                            },
+                        ]}
+                        defaultSortBy={
+                            GenericAssayFrequencyTableColumnKey.NUMBER
+                        }
+                    />
                 );
             }
             default:

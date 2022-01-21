@@ -819,6 +819,12 @@ export type TypeOfCancer = {
 
 };
 
+export type GenericAssayEntityCount = {
+    'genericAssayType': string;
+    'profileType': string;
+    'count': number;
+}
+
 /**
  * A web service for supplying JSON formatted data to cBioPortal clients. Please note that this API is currently in beta and subject to change.
  * @class CBioPortalAPI

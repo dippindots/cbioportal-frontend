@@ -513,6 +513,31 @@ export class StudySummaryTab extends React.Component<
                 };
                 break;
             }
+            case ChartTypeEnum.GENERIC_ASSAY_FREQUENCY_TABLE: {
+                props.filters = this.store.getGenericAssayFrequencyFiltersByUniqueKey(
+                    chartMeta.uniqueKey
+                );
+                props.promise = this.store.genericAssayFrequencyTableRows;
+                props.onValueSelection = this.store.updateGenericAssayFrequencyFiltersByValues;
+                props.onResetSelection = () =>
+                    this.store.updateGenericAssayFrequencyFiltersByValues(
+                        chartMeta,
+                        []
+                    );
+
+                // TODO: add sample and patient count here
+                // props.title = this.store.getChartTitle(
+                //     ChartTypeEnum.MUTATED_GENES_TABLE,
+                //     props.title
+                // );
+
+                props.getData = () =>
+                    this.store.getGenericAssayFrequencyChartDownloadData(
+                        chartMeta
+                    );
+                props.downloadTypes = ['Data'];
+                break;
+            }
             default:
                 break;
         }

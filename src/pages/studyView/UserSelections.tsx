@@ -17,6 +17,7 @@ import {
     ChartType,
     getGenomicChartUniqueKey,
     getGenericAssayChartUniqueKey,
+    getGenericAssayFrequencyChartUniqueKey,
 } from 'pages/studyView/StudyViewUtils';
 import {
     ChartMeta,
@@ -280,6 +281,91 @@ export default class UserSelections extends React.Component<
             );
         }
 
+        // Generic Assay chart filters
+        let genericAssayFrequencyFilterComponents: JSX.Element[] = [];
+        if (this.props.filter.genericAssayFrequencyFilters) {
+            _.forEach(
+                this.props.filter.genericAssayFrequencyFilters,
+                genericAssayFrequencyFilter => {
+                    const uniqueKey = getGenericAssayFrequencyChartUniqueKey(
+                        genericAssayFrequencyFilter.genericAssayType,
+                        genericAssayFrequencyFilter.profileType
+                    );
+                    const chartMeta = this.props.attributesMetaSet[uniqueKey];
+                    if (chartMeta) {
+                        // TODO: need to update this components to show both entity id and values selected
+                        genericAssayFrequencyFilterComponents.push(
+                            <div className={styles.parentGroupLogic}>
+                                {/* <GroupLogic
+                                    components={[
+                                        <span
+                                            className={
+                                                styles.filterClinicalAttrName
+                                            }
+                                        >
+                                            {chartMeta.displayName}
+                                        </span>,
+                                        <PillTag
+                                            content={genericAssayFrequencyFilter.values.map(value => value.entityId).join(',')}
+                                            backgroundColor={
+                                                STUDY_VIEW_CONFIG.colors.theme
+                                                    .clinicalFilterContent
+                                            }
+                                            onDelete={() =>
+                                                this.props.updateGenericAssayDataFilter(
+                                                    chartMeta.uniqueKey,
+                                                    []
+                                                )
+                                            }
+                                        />,
+                                    ]}
+                                    operation={':'}
+                                    group={false}
+                                /> */}
+                                <GroupLogic
+                                    components={genericAssayFrequencyFilter.values.map(
+                                        value => {
+                                            console.log(
+                                                genericAssayFrequencyFilter.values
+                                            );
+
+                                            return (
+                                                <GroupLogic
+                                                    components={[
+                                                        <PillTag
+                                                            content={
+                                                                value.entityId
+                                                            }
+                                                            backgroundColor={
+                                                                STUDY_VIEW_CONFIG
+                                                                    .colors
+                                                                    .theme
+                                                                    .clinicalFilterContent
+                                                            }
+                                                            onDelete={() =>
+                                                                this.props.updateGenericAssayDataFilter(
+                                                                    chartMeta.uniqueKey,
+                                                                    []
+                                                                )
+                                                            }
+                                                        />,
+                                                    ]}
+                                                    operation="or"
+                                                    group={false}
+                                                />
+                                            );
+                                        }
+                                    )}
+                                    operation={'and'}
+                                    group={false}
+                                />
+                            </div>
+                        );
+                    }
+                }
+            );
+        }
+
         // All custom data charts
         this.renderClinicalDataFilters(
             this.props.customChartsFilter,
@@ -379,6 +465,10 @@ export default class UserSelections extends React.Component<
         // push to components
         if (genericAssayFilterComponents) {
             components.push(...genericAssayFilterComponents);
+        }
+
+        if (genericAssayFrequencyFilterComponents) {
+            components.push(...genericAssayFrequencyFilterComponents);
         }
 
         if (

@@ -28,6 +28,7 @@ import {
     ChartDataCountSet,
     getOptionsByChartMetaDataType,
     getGenomicChartUniqueKey,
+    getGenericAssayFrequencyChartUniqueKey,
 } from '../StudyViewUtils';
 import { MSKTab, MSKTabs } from '../../../shared/components/MSKTabs/MSKTabs';
 import { ChartTypeEnum, ChartTypeNameEnum } from '../StudyViewConfig';
@@ -46,6 +47,7 @@ import { openSocialAuthWindow } from 'shared/lib/openSocialAuthWindow';
 import { CustomChartData } from 'shared/api/session-service/sessionServiceModels';
 import ReactSelect from 'react-select';
 import { GenericAssayMeta } from 'cbioportal-ts-api-client';
+import { getSuffixOfMolecularProfile } from 'shared/lib/molecularProfileUtils';
 
 export interface IAddChartTabsProps {
     store: StudyViewPageStore;
@@ -291,13 +293,18 @@ class AddChartTabs extends React.Component<IAddChartTabsProps, {}> {
             chartMeta => chartMeta.genericAssayType
         );
 
-        return _.mapValues(groupedChartMetaByGenericAssayType, chartMeta => {
-            return getOptionsByChartMetaDataType(
-                chartMeta,
-                this.selectedAttrs,
-                _.fromPairs(this.props.store.chartsType.toJSON())
-            );
-        });
+        const options = _.mapValues(
+            groupedChartMetaByGenericAssayType,
+            chartMeta => {
+                return getOptionsByChartMetaDataType(
+                    chartMeta,
+                    this.selectedAttrs,
+                    _.fromPairs(this.props.store.chartsType.toJSON())
+                );
+            }
+        );
+
+        return options;
     }
 
     @computed
