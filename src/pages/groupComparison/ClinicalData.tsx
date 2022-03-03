@@ -48,6 +48,7 @@ import ComplexKeyMap from 'shared/lib/complexKeyDataStructures/ComplexKeyMap';
 import { Sample } from 'cbioportal-ts-api-client';
 import ComparisonStore from '../../shared/lib/comparison/ComparisonStore';
 import { createSurvivalAttributeIdsDict } from 'pages/resultsView/survival/SurvivalUtil';
+import { getComparisonCategoricalNaValue } from './ClinicalDataUtils';
 
 export interface IClinicalDataProps {
     store: ComparisonStore;
@@ -309,12 +310,33 @@ export default class ClinicalData extends React.Component<
                 });
             } else {
                 // filter out NA-like values (e.g. unknown)
+                console.log(getComparisonCategoricalNaValue());
+
+                console.log({
+                    ...axisData,
+                    data: axisData.data.filter(
+                        x =>
+                            typeof x.value !== 'string' ||
+                            _.every(
+                                getComparisonCategoricalNaValue(),
+                                naValue =>
+                                    naValue.toLowerCase() !==
+                                    (x.value as string).toLowerCase()
+                            )
+                    ),
+                });
+
                 return Promise.resolve({
                     ...axisData,
                     data: axisData.data.filter(
                         x =>
                             typeof x.value !== 'string' ||
-                            x.value.toLowerCase() !== 'unknown'
+                            _.every(
+                                getComparisonCategoricalNaValue(),
+                                naValue =>
+                                    naValue.toLowerCase() !==
+                                    (x.value as string).toLowerCase()
+                            )
                     ),
                 });
             }
