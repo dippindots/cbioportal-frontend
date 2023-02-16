@@ -964,6 +964,7 @@ export class ChartContainer extends React.Component<IChartContainerProps, {}> {
                             // scatter the tick to avoid text overlaping on study view survival plots
                             yAxisTickCount={2}
                             xAxisTickCount={4}
+                            compactMode={true}
                         />
                     );
                 } else {

@@ -19,6 +19,7 @@ import {
     createSurvivalAttributeIdsDict,
     getNumPatientsAtRisk,
     sortPatientSurvivals,
+    floorScatterData,
 } from './SurvivalUtil';
 
 const exampleAlteredPatientSurvivals = [
@@ -13966,6 +13967,7 @@ describe('SurvivalUtil', () => {
                     xDenominator: 100,
                     yDenominator: 100,
                     threshold: 100,
+                    enableCensoringCross: true,
                 }),
                 []
             );
@@ -13976,6 +13978,7 @@ describe('SurvivalUtil', () => {
                 xDenominator: 0,
                 yDenominator: 100,
                 threshold: 100,
+                enableCensoringCross: true,
             };
             assert.deepEqual(
                 downSampling(allScatterData, opts),
@@ -13988,6 +13991,7 @@ describe('SurvivalUtil', () => {
                 xDenominator: -1,
                 yDenominator: 100,
                 threshold: 100,
+                enableCensoringCross: true,
             };
             assert.deepEqual(
                 downSampling(allScatterData, opts),
@@ -14032,6 +14036,7 @@ describe('SurvivalUtil', () => {
                         xDenominator: 4,
                         yDenominator: 4,
                         threshold: 100,
+                        enableCensoringCross: true,
                     }
                 ),
                 [
@@ -14094,6 +14099,7 @@ describe('SurvivalUtil', () => {
                         threshold: 100,
                         xDenominator: 4,
                         yDenominator: 4,
+                        enableCensoringCross: true,
                     }
                 ),
                 [
@@ -14156,6 +14162,7 @@ describe('SurvivalUtil', () => {
                         threshold: 100,
                         xDenominator: 5,
                         yDenominator: 5,
+                        enableCensoringCross: true,
                     }
                 ),
                 [
@@ -14227,6 +14234,7 @@ describe('SurvivalUtil', () => {
                         threshold: 100,
                         xDenominator: 8,
                         yDenominator: 8,
+                        enableCensoringCross: true,
                     }
                 ),
                 [
@@ -14262,6 +14270,97 @@ describe('SurvivalUtil', () => {
         });
     });
 
+    describe('floorScatterData()', () => {
+        it('return correct data after do flooring', () => {
+            let testScatterData: ScatterData[] = [
+                {
+                    x: 0,
+                    y: 10,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                },
+                {
+                    x: 0.5,
+                    y: 9,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                },
+                {
+                    x: 1,
+                    y: 8,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                },
+                {
+                    x: 1.2,
+                    y: 7,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                },
+                {
+                    x: 1.4,
+                    y: 6,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                },
+                {
+                    x: 1.5,
+                    y: 6,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: false,
+                    opacity: 0,
+                },
+            ];
+            let result = [
+                {
+                    x: 0,
+                    y: 9,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                    numberOfEvents: 2,
+                    numberOfCensored: 0,
+                    atRisk: undefined,
+                    group: undefined,
+                },
+                {
+                    x: 1,
+                    y: 6,
+                    patientId: '',
+                    uniquePatientKey: '',
+                    studyId: '',
+                    status: true,
+                    opacity: 1,
+                    numberOfEvents: 3,
+                    numberOfCensored: 1,
+                    atRisk: undefined,
+                    group: undefined,
+                },
+            ];
+
+            assert.deepEqual(floorScatterData(testScatterData), result);
+        });
+    });
+
     describe('filterScatterData()', () => {
         it('Return full data if the filers are undefined', () => {
             let testData = {
@@ -14277,6 +14376,7 @@ describe('SurvivalUtil', () => {
                     xDenominator: 100,
                     yDenominator: 100,
                     threshold: 100,
+                    enableCensoringCross: true,
                 }),
                 testData
             );
@@ -14324,6 +14424,7 @@ describe('SurvivalUtil', () => {
                     xDenominator: 2,
                     yDenominator: 2,
                     threshold: 2,
+                    enableCensoringCross: true,
                 }
             );
             assert.deepEqual(result.altered.numOfCases, 2);

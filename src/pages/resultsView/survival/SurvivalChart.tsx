@@ -88,10 +88,13 @@ export interface ISurvivalChartProps {
     legendLabelComponent?: any;
     yAxisTickCount?: number;
     xAxisTickCount?: number;
+    // Compact mode will hide censoring dots in the chart and do binning based on configuration
+    compactMode?: boolean;
 }
 
 const MIN_GROUP_SIZE_FOR_LOGRANK = 10;
 // Start to down sampling when there are more than 1000 dots in the plot.
+// TODO: 1000 samples is our current setting, but we should make this configurable
 const SURVIVAL_DOWN_SAMPLING_THRESHOLD = 1000;
 
 @observer
@@ -269,15 +272,30 @@ export default class SurvivalChart
     // The filter is only available when user zooms in the plot.
     @computed
     get scatterData(): GroupedScatterData {
-        return filterScatterData(
-            this.unfilteredScatterData,
-            this.scatterFilter,
-            {
-                xDenominator: this.downSamplingDenominators.x,
-                yDenominator: this.downSamplingDenominators.y,
-                threshold: SURVIVAL_DOWN_SAMPLING_THRESHOLD,
-            }
-        );
+        if (this.props.compactMode) {
+            return filterScatterData(
+                this.unfilteredScatterData,
+                this.scatterFilter,
+                {
+                    xDenominator: this.downSamplingDenominators.x,
+                    yDenominator: this.downSamplingDenominators.y,
+                    threshold: SURVIVAL_DOWN_SAMPLING_THRESHOLD,
+                    enableCensoringCross: false,
+                    floorTimeToMonth: true,
+                }
+            );
+        } else {
+            return filterScatterData(
+                this.unfilteredScatterData,
+                this.scatterFilter,
+                {
+                    xDenominator: this.downSamplingDenominators.x,
+                    yDenominator: this.downSamplingDenominators.y,
+                    threshold: SURVIVAL_DOWN_SAMPLING_THRESHOLD,
+                    enableCensoringCross: true,
+                }
+            );
+        }
     }
 
     public static defaultProps: Partial<ISurvivalChartProps> = {
@@ -790,6 +808,78 @@ export default class SurvivalChart
         ));
     }
 
+    @computed get tooltipContent() {
+        return (
+            <div>
+                Patient ID:{' '}
+                <a
+                    href={getPatientViewUrl(
+                        this.tooltipModel.datum.studyId,
+                        this.tooltipModel.datum.patientId
+                    )}
+                    target="_blank"
+                >
+                    {this.tooltipModel.datum.patientId}
+                </a>
+                <br />
+                {!!this.props.showCurveInTooltip && [
+                    `Curve: ${this.tooltipModel.datum.group}`,
+                    <br />,
+                ]}
+                {this.props.yLabelTooltip}:{' '}
+                {this.tooltipModel.datum.y.toFixed(2)}%<br />
+                {this.tooltipModel.datum.status
+                    ? this.props.xLabelWithEventTooltip
+                    : this.props.xLabelWithoutEventTooltip}
+                : {this.tooltipModel.datum.x.toFixed(2)} months{' '}
+                {this.tooltipModel.datum.status ? '' : '(censored)'}
+                <br />
+                {this.props.analysisClinicalAttribute && (
+                    <span>
+                        {this.props.analysisClinicalAttribute.displayName}:{' '}
+                        {
+                            this.props.patientToAnalysisGroups[
+                                this.tooltipModel.datum.uniquePatientKey
+                            ]
+                        }
+                    </span>
+                )}
+                <br />
+                Number of patients at risk: {this.tooltipModel.datum.atRisk}
+            </div>
+        );
+    }
+
+    @computed get compactTooltipContent() {
+        return (
+            <div>
+                {this.props.xLabelWithEventTooltip}: {this.tooltipModel.datum.x}
+                -{this.tooltipModel.datum.x + 1} months <br />
+                {this.props.yLabelTooltip} at the end of months (
+                {this.tooltipModel.datum.x} months) :{' '}
+                {this.tooltipModel.datum.y.toFixed(2)}%
+                <br />
+                Number of patients at risk at the end of months (
+                {this.tooltipModel.datum.x} months) :{' '}
+                {this.tooltipModel.datum.atRisk}
+                <br />
+                {this.tooltipModel.datum.numberOfEvents !== undefined && (
+                    <>
+                        Number of patients have event:{' '}
+                        {this.tooltipModel.datum.numberOfEvents}
+                    </>
+                )}
+                <br />
+                {this.tooltipModel.datum.numberOfCensored !== undefined && (
+                    <>
+                        Number of patients are censored:{' '}
+                        {this.tooltipModel.datum.numberOfCensored}
+                    </>
+                )}
+            </div>
+        );
+    }
+
     public render() {
         if (
             _.flatten(_.values(this.props.sortedGroupedSurvivals)).length === 0
@@ -829,51 +919,9 @@ export default class SurvivalChart
                             onMouseEnter={this.tooltipMouseEnter}
                             onMouseLeave={this.tooltipMouseLeave}
                         >
-                            <div>
-                                Patient ID:{' '}
-                                <a
-                                    href={getPatientViewUrl(
-                                        this.tooltipModel.datum.studyId,
-                                        this.tooltipModel.datum.patientId
-                                    )}
-                                    target="_blank"
-                                >
-                                    {this.tooltipModel.datum.patientId}
-                                </a>
-                                <br />
-                                {!!this.props.showCurveInTooltip && [
-                                    `Curve: ${this.tooltipModel.datum.group}`,
-                                    <br />,
-                                ]}
-                                {this.props.yLabelTooltip}:{' '}
-                                {this.tooltipModel.datum.y.toFixed(2)}%<br />
-                                {this.tooltipModel.datum.status
-                                    ? this.props.xLabelWithEventTooltip
-                                    : this.props.xLabelWithoutEventTooltip}
-                                : {this.tooltipModel.datum.x.toFixed(2)} months{' '}
-                                {this.tooltipModel.datum.status
-                                    ? ''
-                                    : '(censored)'}
-                                <br />
-                                {this.props.analysisClinicalAttribute && (
-                                    <span>
-                                        {
-                                            this.props.analysisClinicalAttribute
-                                                .displayName
-                                        }
-                                        :{' '}
-                                        {
-                                            this.props.patientToAnalysisGroups[
-                                                this.tooltipModel.datum
-                                                    .uniquePatientKey
-                                            ]
-                                        }
-                                    </span>
-                                )}
-                                <br />
-                                Number of patients at risk:{' '}
-                                {this.tooltipModel.datum.atRisk}
-                            </div>
+                            {this.props.compactMode
+                                ? this.compactTooltipContent
+                                : this.tooltipContent}
                         </Popover>
                     )}
                     {this.props.showTable && (

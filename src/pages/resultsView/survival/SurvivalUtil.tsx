@@ -15,12 +15,16 @@ export type ScatterData = {
     opacity?: number;
     group?: string;
     atRisk?: number;
+    numberOfEvents?: number;
+    numberOfCensored?: number;
 };
 
 export type DownSamplingOpts = {
     xDenominator: number;
     yDenominator: number;
     threshold: number;
+    enableCensoringCross?: boolean;
+    floorTimeToMonth?: boolean;
 };
 
 export type GroupedScatterData = {
@@ -50,6 +54,13 @@ export type SurvivalPlotFilters = {
 export type ParsedSurvivalData = {
     status: string | undefined;
     label: string;
+};
+
+type EventInfo = ScatterData & {
+    eventCount: number;
+    lastYInMonth: number;
+    censorCount: number;
+    lastRiskInMonth?: number;
 };
 
 export const survivalCasesHeaderText: { [prefix: string]: string } = {
@@ -520,6 +531,80 @@ export function downSampling(
     });
 }
 
+export function floorScatterData(
+    scatterDataWithOpacity: ScatterData[]
+): ScatterData[] {
+    const eventInfoByMonth: { [month: number]: EventInfo } = {};
+    let eventInfo: EventInfo;
+    let result: ScatterData[] = [];
+    _.reduce(
+        scatterDataWithOpacity,
+        (eventInfoByMonth: { [month: string]: EventInfo }, item) => {
+            const month = Math.floor(item.x);
+            if (!(month in eventInfoByMonth)) {
+                // Provide initial value
+                eventInfo = {
+                    ...item,
+                    eventCount: 0,
+                    lastYInMonth: 0,
+                    censorCount: 0,
+                    lastRiskInMonth: item.atRisk!,
+                };
+            } else {
+                eventInfo = eventInfoByMonth[month];
+            }
+            eventInfoByMonth[month] = updateEventInfo(eventInfo, item);
+            return eventInfoByMonth;
+        },
+        eventInfoByMonth
+    );
+
+    result = _.map(eventInfoByMonth, (eventInfo, month) => {
+        const aggregatedScatter: ScatterData = {
+            x: parseInt(month),
+            y: eventInfo.lastYInMonth,
+            patientId: eventInfo.patientId,
+            uniquePatientKey: eventInfo.uniquePatientKey,
+            studyId: eventInfo.studyId,
+            status: eventInfo.status,
+            opacity: eventInfo.opacity,
+            group: eventInfo.group,
+            atRisk: eventInfo.lastRiskInMonth,
+            numberOfEvents: eventInfo.eventCount,
+            numberOfCensored: eventInfo.censorCount,
+        };
+        return aggregatedScatter;
+    });
+    return result;
+}
+
+function updateEventInfo(eventInfo: EventInfo, data: ScatterData): EventInfo {
+    let updatedEventInfo: EventInfo = eventInfo;
+    updatedEventInfo.lastYInMonth = data.y;
+    updatedEventInfo.lastRiskInMonth = data.atRisk;
+    updatedEventInfo.eventCount = data.status
+        ? eventInfo.eventCount + 1
+        : eventInfo.eventCount;
+    updatedEventInfo.censorCount = data.status
+        ? eventInfo.censorCount
+        : eventInfo.censorCount + 1;
+    return updatedEventInfo;
+}
+
+export function getLineDataFromScatterData(data: ScatterData[]): any[] {
+    let chartData: any[] = [];
+
+    chartData.push({ x: 0, y: 100 });
+    data.forEach((item, index) => {
+        chartData.push({
+            x: item.x,
+            y: item.y,
+        });
+    });
+
+    return chartData;
+}
+
 export function filterScatterData(
     allScatterData: GroupedScatterData,
     filters: SurvivalPlotFilters | undefined,
@@ -536,11 +621,15 @@ export function filterScatterData(
                     _val => filterBasedOnCoordinates(filters, _val)
                 );
             }
-            value.scatter = downSampling(value.scatter, downSamplingOpts);
-            value.scatterWithOpacity = downSampling(
-                value.scatterWithOpacity,
-                downSamplingOpts
-            );
+            if (downSamplingOpts.floorTimeToMonth) {
+                value.scatter = floorScatterData(value.scatterWithOpacity);
+                value.line = getLineDataFromScatterData(value.scatter);
+            } else {
+                value.scatter = downSampling(value.scatter, downSamplingOpts);
+            }
+            value.scatterWithOpacity = downSamplingOpts.enableCensoringCross
+                ? downSampling(value.scatterWithOpacity, downSamplingOpts)
+                : [];
             value.numOfCases = value.scatter.length;
         }
     });
