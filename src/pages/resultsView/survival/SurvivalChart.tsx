@@ -28,6 +28,7 @@ import {
     filterScatterData,
     SurvivalPlotFilters,
     SurvivalSummary,
+    SURVIVAL_COMPACT_MODE_THRESHOLD,
 } from './SurvivalUtil';
 import { toConditionalPrecision } from 'shared/lib/NumberUtils';
 import { getPatientViewUrl } from '../../../shared/api/urls';
@@ -853,29 +854,28 @@ export default class SurvivalChart
     @computed get compactTooltipContent() {
         return (
             <div>
-                {this.props.xLabelWithEventTooltip}: {this.tooltipModel.datum.x}
-                -{this.tooltipModel.datum.x + 1} months <br />
-                {this.props.yLabelTooltip} at the end of months (
-                {this.tooltipModel.datum.x} months) :{' '}
-                {this.tooltipModel.datum.y.toFixed(2)}%
-                <br />
-                Number of patients at risk at the end of months (
-                {this.tooltipModel.datum.x} months) :{' '}
-                {this.tooltipModel.datum.atRisk}
+                Events during [{this.tooltipModel.datum.x},
+                {this.tooltipModel.datum.x + 1}) months
                 <br />
                 {this.tooltipModel.datum.numberOfEvents !== undefined && (
                     <>
-                        Number of patients have event:{' '}
+                        Patients with an event:{' '}
                         {this.tooltipModel.datum.numberOfEvents}
                     </>
                 )}
                 <br />
                 {this.tooltipModel.datum.numberOfCensored !== undefined && (
                     <>
-                        Number of patients are censored:{' '}
+                        Censored patients:{' '}
                         {this.tooltipModel.datum.numberOfCensored}
                     </>
                 )}
+                <br />
+                <br />% event free at interval end:{' '}
+                {this.tooltipModel.datum.y.toFixed(2)}%
+                <br />
+                Patients at risk at interval end:{' '}
+                {this.tooltipModel.datum.atRisk}
             </div>
         );
     }
@@ -907,15 +907,16 @@ export default class SurvivalChart
                                 'cbioTooltip',
                                 styles.Tooltip
                             )}
-                            positionLeft={
-                                this.tooltipModel.x +
-                                this.styleOpts.tooltipXOffset
-                            }
-                            {...{ container: this }}
-                            positionTop={
-                                this.tooltipModel.y +
-                                this.styleOpts.tooltipYOffset
-                            }
+                            // positionLeft={
+                            //     this.tooltipModel.x +
+                            //     this.styleOpts.tooltipXOffset
+                            // }
+                            // {...{ container: this }}
+                            // positionTop={
+                            //     this.tooltipModel.y +
+                            //     this.styleOpts.tooltipYOffset
+                            // }
+                            placement={'bottom'}
                             onMouseEnter={this.tooltipMouseEnter}
                             onMouseLeave={this.tooltipMouseLeave}
                         >

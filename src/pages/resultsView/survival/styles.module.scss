@@ -21,7 +21,7 @@
         font-size: 12px;
     }
     max-width: none !important; //override bootstrap
-    white-space: nowrap;
+    white-space: nowrap !important;
 }
 
 .NotAvailable {
