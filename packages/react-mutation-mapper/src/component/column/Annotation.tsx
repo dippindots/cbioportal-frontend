@@ -357,10 +357,16 @@ export function GenericAnnotation(props: GenericAnnotationProps): JSX.Element {
                     contentPadding={oncoKbContentPadding}
                 />
             )}
-            {enableRevue && annotation.vue ? (
-                <RevueCell vue={annotation.vue} />
-            ) : (
-                <span className={`${annotationStyles['annotation-item']}`} />
+            {enableRevue && (
+                <>
+                    {annotation.vue ? (
+                        <RevueCell vue={annotation.vue} />
+                    ) : (
+                        <span
+                            className={`${annotationStyles['annotation-item']}`}
+                        />
+                    )}
+                </>
             )}
             {enableCivic && (
                 <Civic
