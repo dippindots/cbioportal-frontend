@@ -4,7 +4,7 @@
 # Check if api-spec-converter is installed
 if ! command -v api-spec-converter &> /dev/null
 then
-    # Install api-spec-converter, ignoring errors
+    # Install api-spec-converter latest version (resolutions in package.json lock problematic dependencies)
     npm install api-spec-converter --no-save --legacy-peer-deps 2>/dev/null || true
 fi
 
