@@ -237,41 +237,43 @@ jobs:
           name: Generate cache key for dist
           command: |
             cd cbioportal-frontend
-            echo "Concatenate all source files to use as hash key."
-            cat yarn.lock $(find src/ -type f | sort) $(find packages/ -type f | sort) webpack.config.js vendor-bundles.webpack.config.js > has_source_changed
+            # Optimized: Use git hash + config files instead of concatenating all source files
+            git rev-parse HEAD > .cache-key
+            cat yarn.lock package.json webpack.config.js vendor-bundles.webpack.config.js >> .cache-key
       - restore_cache:
           keys:
-            - v11-dependencies-plus-dist-{{ checksum "cbioportal-frontend/has_source_changed" }}
-            - v11-dependencies-{{ checksum "cbioportal-frontend/yarn.lock" }}
+            - v12-dependencies-plus-dist-{{ checksum "cbioportal-frontend/.cache-key" }}
+            - v12-dependencies-{{ checksum "cbioportal-frontend/yarn.lock" }}
       - run:
           name: Download dependencies
           command: |
             cd cbioportal-frontend
-            yarn
+            # Optimized: Use --prefer-offline for faster installs
+            yarn install --frozen-lockfile --prefer-offline
             yarn buildModules
+            # Install e2e test dependencies in same step
+            cd end-to-end-test
+            yarn install --frozen-lockfile --ignore-engines --prefer-offline
       - save_cache:
           name: Save dependency cache
-          key: v11-dependencies-{{ checksum "cbioportal-frontend/yarn.lock" }}
+          key: v12-dependencies-{{ checksum "cbioportal-frontend/yarn.lock" }}
           paths:
             - cbioportal-frontend/node_modules
+            - cbioportal-frontend/end-to-end-test/node_modules
       - run:
           name: Build frontend application
           environment:
             DISABLE_SOURCEMAP: true
-            NO_PARALLEL: true
+            # Optimized: Enable parallel builds for faster compilation
           command: |
             cd cbioportal-frontend
             ls dist || yarn run build
-      - run:
-          name: Build frontend tests
-          command: |
-            cd cbioportal-frontend/end-to-end-test
-            ls node_modules || yarn install --frozen-lockfile --ignore-engines
       - save_cache:
           name: Save dependency plus dist cache
-          key: v11-dependencies-plus-dist-{{ checksum "cbioportal-frontend/has_source_changed" }}
+          key: v12-dependencies-plus-dist-{{ checksum "cbioportal-frontend/.cache-key" }}
           paths:
             - cbioportal-frontend/node_modules
+            - cbioportal-frontend/end-to-end-test/node_modules
             - cbioportal-frontend/dist
             - cbioportal-frontend/common-dist
       - persist_to_workspace:
