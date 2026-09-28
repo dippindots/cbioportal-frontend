@@ -1819,8 +1819,13 @@ export class PatientViewPageStore {
         invoke: () =>
             fetchResourceTableTabs({
                 studyIds: [this.studyId],
-                patientIds: [this.patientId],
-                sampleIds: this.samples.result!.map(s => s.sampleId),
+                patientIdentifiers: [
+                    { studyId: this.studyId, patientId: this.patientId },
+                ],
+                sampleIdentifiers: this.samples.result!.map(s => ({
+                    studyId: this.studyId,
+                    sampleId: s.sampleId,
+                })),
             }),
         default: [],
     });

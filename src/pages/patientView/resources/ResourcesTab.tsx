@@ -29,10 +29,15 @@ export default class ResourcesTab extends React.Component<
         this.storeReactionDisposer = autorun(() => {
             const { store } = this.props;
             if (!store.samples.result) return;
-            const studyIds = [store.studyId];
-            const patientIds = [store.patientId];
-            const sampleIds = store.samples.result.map(s => s.sampleId);
-            this.resourceTableStore.setContext(studyIds, patientIds, sampleIds);
+            const studyId = store.studyId;
+            this.resourceTableStore.setContext(
+                [studyId],
+                [{ studyId, patientId: store.patientId }],
+                store.samples.result.map(s => ({
+                    studyId,
+                    sampleId: s.sampleId,
+                }))
+            );
         });
     }
 

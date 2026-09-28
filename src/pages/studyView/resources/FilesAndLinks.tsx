@@ -25,10 +25,7 @@ export class FilesAndLinks extends React.Component<IFilesLinksTable, {}> {
         this.storeReactionDisposer = autorun(() => {
             const samples = this.props.store.selectedSamples.result;
             if (!samples) return;
-            const studyIds = _.uniq(samples.map(s => s.studyId));
-            const patientIds = _.uniq(samples.map(s => s.patientId));
-            const sampleIds = samples.map(s => s.sampleId);
-            this.resourceTableStore.setContext(studyIds, patientIds, sampleIds);
+            this.resourceTableStore.setContextFromSamples(samples);
         });
     }
 
@@ -42,9 +39,7 @@ export class FilesAndLinks extends React.Component<IFilesLinksTable, {}> {
         const samplesLoading = this.props.store.selectedSamples.isPending;
 
         if (samplesLoading) {
-            return (
-                <LoadingIndicator isLoading center size="big" />
-            );
+            return <LoadingIndicator isLoading center size="big" />;
         }
 
         return (

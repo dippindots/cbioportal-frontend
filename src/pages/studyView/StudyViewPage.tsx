@@ -3,7 +3,14 @@ import _ from 'lodash';
 import { inject, Observer, observer } from 'mobx-react';
 import { MSKTab, MSKTabs } from '../../shared/components/MSKTabs/MSKTabs';
 import 'react-toastify/dist/ReactToastify.css';
-import { action, autorun, computed, IReactionDisposer, makeObservable, observable } from 'mobx';
+import {
+    action,
+    autorun,
+    computed,
+    IReactionDisposer,
+    makeObservable,
+    observable,
+} from 'mobx';
 import {
     StudyViewPageStore,
     StudyViewPageTabDescriptions,
@@ -144,7 +151,10 @@ export default class StudyViewPage extends React.Component<
     @observable private toolbarLeft: number = 0;
 
     private readonly resourceTableStore = new ResourceTableStore();
-    private readonly resourceTableStores = new Map<string, ResourceTableStore>();
+    private readonly resourceTableStores = new Map<
+        string,
+        ResourceTableStore
+    >();
     private resourceTableStoreDisposer: IReactionDisposer | null = null;
     private legacyTabRedirectDisposer: IReactionDisposer | null = null;
 
@@ -311,12 +321,9 @@ export default class StudyViewPage extends React.Component<
         this.resourceTableStoreDisposer = autorun(() => {
             const samples = this.store.selectedSamples.result;
             if (!samples) return;
-            const studyIds = _.uniq(samples.map(s => s.studyId));
-            const patientIds = _.uniq(samples.map(s => s.patientId));
-            const sampleIds = samples.map(s => s.sampleId);
-            this.resourceTableStore.setContext(studyIds, patientIds, sampleIds);
+            this.resourceTableStore.setContextFromSamples(samples);
             this.resourceTableStores.forEach(store =>
-                store.setContext(studyIds, patientIds, sampleIds)
+                store.setContextFromSamples(samples)
             );
         });
 
@@ -325,7 +332,8 @@ export default class StudyViewPage extends React.Component<
         this.legacyTabRedirectDisposer = autorun(() => {
             if (
                 this.hasNewResourceTabs &&
-                this.urlWrapper.tabId === StudyViewPageTabKeyEnum.FILES_AND_LINKS
+                this.urlWrapper.tabId ===
+                    StudyViewPageTabKeyEnum.FILES_AND_LINKS
             ) {
                 const firstTab = this.resourceTableStore.tabs.result?.[0];
                 if (firstTab) {
@@ -346,10 +354,7 @@ export default class StudyViewPage extends React.Component<
 
             const samples = this.store.selectedSamples.result;
             if (samples) {
-                const studyIds = _.uniq(samples.map(s => s.studyId));
-                const patientIds = _.uniq(samples.map(s => s.patientId));
-                const sampleIds = samples.map(s => s.sampleId);
-                store.setContext(studyIds, patientIds, sampleIds);
+                store.setContextFromSamples(samples);
             }
         }
         return store;
@@ -652,9 +657,7 @@ export default class StudyViewPage extends React.Component<
     }
 
     readonly resourceTabs = MakeMobxView({
-        await: () => [
-            this.resourceTableStore.tabs,
-        ],
+        await: () => [this.resourceTableStore.tabs],
         render: () => {
             const apiTabs = this.resourceTableStore.tabs.result || [];
             if (apiTabs.length === 0) {
@@ -866,7 +869,10 @@ export default class StudyViewPage extends React.Component<
                                                       .result[0].displayName
                                                 : RESOURCES_TAB_NAME
                                         }
-                                        hide={!this.shouldShowResources || this.hasNewResourceTabs}
+                                        hide={
+                                            !this.shouldShowResources ||
+                                            this.hasNewResourceTabs
+                                        }
                                     >
                                         <div>
                                             <ResourcesTab

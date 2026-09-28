@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getCbioPortalApiUrl } from 'shared/api/urls';
+import { PatientIdentifier, SampleIdentifier } from 'cbioportal-ts-api-client';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -60,10 +61,17 @@ export interface ResourceTableResult {
     distinctValueCounts?: { [backendField: string]: number };
 }
 
+/**
+ * resource_data stores *stable* ids, which are unique only within a study, so the cohort has to
+ * travel as (studyId, id) pairs. Sending bare id lists alongside a separate study list lets the
+ * backend match the cross product instead of the cohort: with two studies that each contain a
+ * sample called TCGA-A1-A0SB-01, selecting one study's copy would also pull in the other's rows,
+ * and the distinct counts would report the two samples as one.
+ */
 export interface ResourceTabsRequest {
     studyIds: string[];
-    patientIds: string[];
-    sampleIds: string[];
+    patientIdentifiers: PatientIdentifier[];
+    sampleIdentifiers: SampleIdentifier[];
 }
 
 export interface ResourceColumnFilter {
@@ -75,8 +83,8 @@ export interface ResourceColumnFilter {
 export interface ResourceTableQuery {
     studyIds: string[];
     resourceId: string;
-    patientIds: string[];
-    sampleIds: string[];
+    patientIdentifiers: PatientIdentifier[];
+    sampleIdentifiers: SampleIdentifier[];
     search?: string;
     pageNumber: number;
     pageSize: number;

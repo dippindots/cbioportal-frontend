@@ -15,6 +15,12 @@ import {
     IResourceTableRow,
     IResourceTableTab,
 } from 'shared/lib/ResourceTableUtils';
+import {
+    PatientIdentifier,
+    Sample,
+    SampleIdentifier,
+} from 'cbioportal-ts-api-client';
+import _ from 'lodash';
 
 // Guards against a pathological resource pulling an unbounded result set into the browser.
 const MAX_DOWNLOAD_ROWS = 100000;
@@ -39,8 +45,8 @@ const EMPTY_RESULT: ResourceTableResult = {
  */
 export class ResourceTableStore {
     @observable studyIds: string[] = [];
-    @observable patientIds: string[] = [];
-    @observable sampleIds: string[] = [];
+    @observable patientIdentifiers: PatientIdentifier[] = [];
+    @observable sampleIdentifiers: SampleIdentifier[] = [];
     @observable selectedResourceId: string | undefined;
 
     // Server-side state
@@ -55,19 +61,47 @@ export class ResourceTableStore {
         makeObservable(this);
     }
 
+    /**
+     * The cohort travels as (studyId, id) pairs rather than bare id lists: stable ids are unique
+     * only within a study, so flat lists would let the backend match the cross product of the
+     * selected studies and ids. See ResourceTabsRequest.
+     */
     @action
     setContext(
         studyIds: string[],
-        patientIds: string[] = [],
-        sampleIds: string[] = []
+        patientIdentifiers: PatientIdentifier[] = [],
+        sampleIdentifiers: SampleIdentifier[] = []
     ) {
         this.studyIds = studyIds;
-        this.patientIds = patientIds;
-        this.sampleIds = sampleIds;
+        this.patientIdentifiers = patientIdentifiers;
+        this.sampleIdentifiers = sampleIdentifiers;
         this.selectedResourceId = undefined;
         this.pageNumber = 0;
         this.searchTerm = '';
         this.filters = [];
+    }
+
+    /**
+     * Derives the whole cohort from a sample set, keeping each id paired with its own study. Use
+     * this wherever the cohort *is* the samples, so a call site cannot flatten the pairing away.
+     * The patient view builds its context explicitly instead, because a patient with no samples
+     * still has patient-level resources to show.
+     */
+    @action
+    setContextFromSamples(
+        samples: Pick<Sample, 'studyId' | 'patientId' | 'sampleId'>[]
+    ) {
+        this.setContext(
+            _.uniq(samples.map(s => s.studyId)),
+            _.uniqBy(
+                samples.map(s => ({
+                    studyId: s.studyId,
+                    patientId: s.patientId,
+                })),
+                d => `${d.studyId}_${d.patientId}`
+            ),
+            samples.map(s => ({ studyId: s.studyId, sampleId: s.sampleId }))
+        );
     }
 
     @action setSelectedResourceId(resourceId: string) {
@@ -107,8 +141,8 @@ export class ResourceTableStore {
             if (this.studyIds.length === 0) return [];
             return fetchResourceTableTabs({
                 studyIds: this.studyIds,
-                patientIds: this.patientIds,
-                sampleIds: this.sampleIds,
+                patientIdentifiers: this.patientIdentifiers,
+                sampleIdentifiers: this.sampleIdentifiers,
             });
         },
         default: [],
@@ -128,8 +162,8 @@ export class ResourceTableStore {
             return fetchResourceTableData({
                 studyIds: this.studyIds,
                 resourceId,
-                patientIds: this.patientIds,
-                sampleIds: this.sampleIds,
+                patientIdentifiers: this.patientIdentifiers,
+                sampleIdentifiers: this.sampleIdentifiers,
                 pageNumber: this.pageNumber,
                 pageSize: this.pageSize,
                 sortBy: this.sortBy,
@@ -202,8 +236,8 @@ export class ResourceTableStore {
         const result = await fetchResourceTableData({
             studyIds: this.studyIds,
             resourceId,
-            patientIds: this.patientIds,
-            sampleIds: this.sampleIds,
+            patientIdentifiers: this.patientIdentifiers,
+            sampleIdentifiers: this.sampleIdentifiers,
             pageNumber: 0,
             pageSize: Math.min(
                 Math.max(this.totalRowCount, 1),

@@ -12,7 +12,15 @@ import {
     buildCohortIdsFromNavCaseIds,
 } from './clinicalInformation/PatientViewPageStore';
 import { inject, observer } from 'mobx-react';
-import { action, autorun, computed, IReactionDisposer, observable, makeObservable, toJS } from 'mobx';
+import {
+    action,
+    autorun,
+    computed,
+    IReactionDisposer,
+    observable,
+    makeObservable,
+    toJS,
+} from 'mobx';
 import { default as PatientViewMutationTable } from './mutation/PatientViewMutationTable';
 import { MSKTab } from '../../shared/components/MSKTabs/MSKTabs';
 import ValidationAlert from 'shared/components/ValidationAlert';
@@ -158,7 +166,10 @@ export class PatientViewPageInner extends React.Component<
     public patientViewPageStore: PatientViewPageStore;
 
     readonly resourceTableStore = new ResourceTableStore();
-    private readonly resourceTableStores = new Map<string, ResourceTableStore>();
+    private readonly resourceTableStores = new Map<
+        string,
+        ResourceTableStore
+    >();
     private resourceTableStoreDisposer: IReactionDisposer | null = null;
 
     constructor(props: IPatientViewPageProps) {
@@ -215,12 +226,26 @@ export class PatientViewPageInner extends React.Component<
         this.resourceTableStoreDisposer = autorun(() => {
             const samples = this.pageStore.samples.result;
             if (!samples) return;
-            const studyIds = [this.pageStore.studyId];
-            const patientIds = [this.pageStore.patientId];
-            const sampleIds = samples.map(s => s.sampleId);
-            this.resourceTableStore.setContext(studyIds, patientIds, sampleIds);
+            const studyId = this.pageStore.studyId;
+            const studyIds = [studyId];
+            const patientIdentifiers = [
+                { studyId, patientId: this.pageStore.patientId },
+            ];
+            const sampleIdentifiers = samples.map(s => ({
+                studyId,
+                sampleId: s.sampleId,
+            }));
+            this.resourceTableStore.setContext(
+                studyIds,
+                patientIdentifiers,
+                sampleIdentifiers
+            );
             this.resourceTableStores.forEach(store =>
-                store.setContext(studyIds, patientIds, sampleIds)
+                store.setContext(
+                    studyIds,
+                    patientIdentifiers,
+                    sampleIdentifiers
+                )
             );
         });
     }
@@ -240,10 +265,11 @@ export class PatientViewPageInner extends React.Component<
 
             const samples = this.pageStore.samples.result;
             if (samples) {
+                const studyId = this.pageStore.studyId;
                 store.setContext(
-                    [this.pageStore.studyId],
-                    [this.pageStore.patientId],
-                    samples.map(s => s.sampleId)
+                    [studyId],
+                    [{ studyId, patientId: this.pageStore.patientId }],
+                    samples.map(s => ({ studyId, sampleId: s.sampleId }))
                 );
             }
         }
@@ -516,9 +542,7 @@ export class PatientViewPageInner extends React.Component<
     }
 
     readonly resourceTabs = MakeMobxView({
-        await: () => [
-            this.resourceTableStore.tabs,
-        ],
+        await: () => [this.resourceTableStore.tabs],
         render: () => {
             const apiTabs = this.resourceTableStore.tabs.result || [];
             if (apiTabs.length === 0) {
