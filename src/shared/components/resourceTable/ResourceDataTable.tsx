@@ -357,43 +357,26 @@ export class ResourceDataTable extends React.Component<
         ];
     }
 
-    @computed private get resourceConfig() {
-        const resourceId = this.props.store.activeResourceId;
-        return resourceId ? getResourceConfig({ resourceId }) : {};
-    }
-
     /**
-     * The word after the count, or undefined when the count is followed by the display name
-     * instead. By default the display name pluralized, "3,074 Slide Microscopies"; a resource's
-     * rowNoun or pluralizeDisplayName setting overrides that.
+     * What to call the rows. The resource's own display name reads far better than a generic
+     * "resources" — "Slide Microscopies" rather than "resources" — so use it when the tab has
+     * loaded and fall back to the caller's label otherwise.
      */
-    @computed get countNoun(): string | undefined {
-        const { rowNoun, pluralizeDisplayName } = this.resourceConfig;
-        const total = this.props.store.totalRowCount;
-        if (rowNoun) {
-            return total === 1 ? rowNoun.one : rowNoun.other;
-        }
+    @computed get itemsLabel(): string {
         const resourceName = this.props.store.activeResourceLabel;
-        if (!resourceName) {
+        if (!resourceName || !this.labelNamesItsRows) {
             return this.props.resourceLabel || 'items';
         }
-        return pluralizeDisplayName === false
-            ? undefined
-            : pluralize(resourceName, total);
+        return pluralize(resourceName, this.props.store.totalRowCount);
     }
 
-    /** True when the count does not name the resource, so the display name follows it. */
-    @computed get countFollowedByLabel(): boolean {
-        const { rowNoun, pluralizeDisplayName } = this.resourceConfig;
+    /** Whether "N <label>s" is a true description of the rows; see pluralizeDisplayName. */
+    @computed get labelNamesItsRows(): boolean {
+        const resourceId = this.props.store.activeResourceId;
         return (
-            !!this.props.store.activeResourceLabel &&
-            (!!rowNoun || pluralizeDisplayName === false)
+            !resourceId ||
+            getResourceConfig({ resourceId }).pluralizeDisplayName !== false
         );
-    }
-
-    /** What to call the rows where only a noun fits, e.g. the table's own empty text. */
-    @computed get itemsLabel(): string {
-        return this.countNoun || this.props.resourceLabel || 'items';
     }
 
     private downloadAllRows = () => this.props.store.fetchAllRowsForDownload();
@@ -429,12 +412,15 @@ export class ResourceDataTable extends React.Component<
                     gap: 6,
                 }}
             >
-                <span>
-                    {startRow}-{endRow} of {totalRowCount}
-                    {this.countNoun && ` ${this.countNoun}`}
-                </span>
-                {this.countFollowedByLabel && (
+                {this.labelNamesItsRows ? (
+                    <span>
+                        {startRow}-{endRow} of {totalRowCount} {this.itemsLabel}
+                    </span>
+                ) : (
                     <>
+                        <span>
+                            {startRow}-{endRow} of {totalRowCount}
+                        </span>
                         <span style={{ color: '#666', fontWeight: 'normal' }}>
                             ·
                         </span>
