@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import { ResourceDataTable } from './ResourceDataTable';
 import { ResourceColumnInfo } from 'shared/api/resourceTableClient';
 import { ResourceTableStore } from './ResourceTableStore';
+import { RESOURCE_CUSTOM_CONFIGS } from 'shared/lib/ResourceConfig';
 import { observable, runInAction } from 'mobx';
 import { act } from 'react-dom/test-utils';
 import LoadingIndicator from 'shared/components/loadingIndicator/LoadingIndicator';
@@ -156,6 +157,42 @@ describe('ResourceDataTable metadata columns', () => {
         assert.include(text, 'of 12·CyCIF·');
         assert.notInclude(text, 'CyCIFs');
         assert.include(text, '1 patient / 12 samples');
+    });
+
+    describe('with a row noun', () => {
+        // No live resource sets one yet; this registers a test-only entry and removes it.
+        beforeEach(() => {
+            RESOURCE_CUSTOM_CONFIGS.TEST_REGIONS = {
+                rowNoun: { one: 'region', other: 'regions' },
+            };
+        });
+        afterEach(() => {
+            delete RESOURCE_CUSTOM_CONFIGS.TEST_REGIONS;
+        });
+
+        const regions = (totalRowCount: number) =>
+            headerText({
+                activeResourceId: 'TEST_REGIONS',
+                activeResourceLabel: 'CyCIF',
+                totalRowCount,
+                filteredPatientCount: 1,
+                filteredSampleCount: totalRowCount,
+            } as any);
+
+        it('counts the rows with the noun and names the resource after it', () => {
+            const text = regions(12);
+            assert.include(text, 'of 12 regions·CyCIF·');
+            assert.notInclude(text, 'CyCIFs');
+        });
+
+        it('uses the singular for one row', () => {
+            assert.include(regions(1), 'of 1 region·CyCIF·');
+        });
+
+        it('wins over pluralizeDisplayName', () => {
+            RESOURCE_CUSTOM_CONFIGS.TEST_REGIONS.pluralizeDisplayName = false;
+            assert.include(regions(12), 'of 12 regions·CyCIF·');
+        });
     });
 
     it('still pluralizes a resource with no such setting', () => {

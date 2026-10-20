@@ -47,6 +47,15 @@ export interface ResourceCustomConfig {
      * Used in: resource table count summary
      */
     pluralizeDisplayName?: boolean;
+
+    /**
+     * The word for one row and for several, when the display name is not it:
+     * { one: 'region', other: 'regions' } reads "1-12 of 12 regions · CyCIF". Given as a pair
+     * because a noun cannot be pluralized reliably from text. Takes precedence over
+     * pluralizeDisplayName.
+     * Used in: resource table count summary
+     */
+    rowNoun?: { one: string; other: string };
 }
 
 /**
